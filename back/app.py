@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 from flask import Flask, jsonify, request
 import requests
-from flaskext.mysql import MySQL
+from flask_cors import CORS
 from pymongo import MongoClient
 import json
 import re
@@ -21,21 +21,11 @@ file_path = "category.json"
 app = Flask(__name__)
 CORS(app)
 
-mysql = MySQL()
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
-app.config['MYSQL_DATABASE_DB'] = 'brain'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
-
-conn = mysql.connect()
-cursor = conn.cursor()
-
 # cursor.execute("SELECT * from User")
 # data = cursor.fetchone()
 # print(data)
 
-mongo_connect = "mongodb+srv://admin:1234@cluster0.zyylgba.mongodb.net/?retryWrites=true&w=majority"
+mongo_connect = "mongodb+srv://admin:1234@cluster0.zyylgba.mongodb.net/brain?retryWrites=true&w=majority"
 client = MongoClient(mongo_connect)
 mongodb = client.brain
 
@@ -450,3 +440,5 @@ def retry_answer():
     return jsonify({"status": 200}), 200
 
 
+# if __name__=='__main__':
+#     app.run(host='0.0.0.0', port=5000, debug=True)
