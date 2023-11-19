@@ -19,6 +19,7 @@ import random
 file_path = "category.json"
 
 app = Flask(__name__)
+CORS(app)
 
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'root'
