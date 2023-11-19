@@ -4,6 +4,7 @@ import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from tokenizers import SentencePieceBPETokenizer
 
+
 # 토크나이저를 불러옵니다.
 tokenizer = SentencePieceBPETokenizer.from_file(vocab_filename="tokenizer/vocab.json", merges_filename="tokenizer/merges.txt", add_prefix_space=False)
 # tokenizer = GPT2Tokenizer.from_pretrained("taeminlee/kogpt2")

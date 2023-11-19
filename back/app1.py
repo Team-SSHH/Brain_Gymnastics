@@ -1,5 +1,4 @@
 from datetime import date, timedelta
-
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests
@@ -8,6 +7,7 @@ from pymongo import MongoClient
 import json
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 file_path = "category.json"
 
