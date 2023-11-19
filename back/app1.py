@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import requests
 from flaskext.mysql import MySQL
 from pymongo import MongoClient
@@ -11,6 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 file_path = "category.json"
 
 app = Flask(__name__)
+CORS(app)
 
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'root'
