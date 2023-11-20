@@ -679,7 +679,7 @@ def score_save(user_id, date):
         "j9":j9_score
     }
 
-    mongodb.score.update_one({'user_id': user_id},{"date" : {date:dict1}}, upsert=True)
+    mongodb.score.update_one({'user_id': user_id},{"date": {date: dict1}}, upsert=True)
 
 
 
