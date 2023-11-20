@@ -196,7 +196,7 @@ def category_cnt(user_id, news_id, category_list):
 @app.route("/recommend/my", methods=['POST'])
 def recommend_news():
     body = request.json
-    user_id = body.get("dded", None)
+    user_id = body.get("user_id", None)
     today = date.today().strftime("%Y-%m-%d")
     tomorrow = (date.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 
