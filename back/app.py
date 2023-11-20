@@ -185,7 +185,9 @@ def category_cnt(user_id, news_id, category_list):
     categories = json_data.get('category', [])
     for category in categories:
         if category in category_list:
-            mongodb.categories.update_one({'user_id': user_id}, {'current_news_id_lst':news_id}, {'$inc': {f'category.{category}': 1}}, upsert=True)
+            mongodb.categories.update_one(
+                {'user_id': user_id},
+                {'$push': {'current_news_id_lst': {'$each': [news_id], '$slice': -3}}, '$inc': {f'category.{category}': 1}}, upsert=True)
 
 
 
@@ -284,7 +286,7 @@ def quiz_create(user_id, news_id):
 
 # 단어 목록 퀴즈 생성 함수
 def create_word_list_quiz(user_id, news_id, keywords):
-    doc = {'user_id': user_id, "quiz_question": "해당 단어들을 기억하세요", "example": keywords, "answer":0, "quiz_type": 0, "news_id": news_id, "number":0}
+    doc = {'user_id': user_id, "quiz_question": "해당 단어들을 기억하세요", "example": keywords, "answer":0, "quiz_type": 4, "news_id": news_id, "number":0}
     mongodb.quiz.insert_one(doc)
 
 # 단어 목록 퀴즈 20 생성 함수
@@ -305,7 +307,7 @@ def create_word_list2_quiz(user_id, news_id, keywords):
     # 셔플
     random.shuffle(new_list)
 
-    doc = {'user_id': user_id, "quiz_question": "어떤 단어들을 보셨었나요", "example": new_list, "answer":keywords, "quiz_type": 2, "news_id": news_id, "number":0}
+    doc = {'user_id': user_id, "quiz_question": "어떤 단어들을 보셨었나요", "example": new_list, "answer":keywords, "quiz_type": 7, "news_id": news_id, "number":0}
     mongodb.quiz.insert_one(doc)
 
 
@@ -326,7 +328,7 @@ def create_choice_quiz(user_id, news_id, keywords, answer, question):
     example = {str(i + 1): choice for i, choice in enumerate(all_choices)}
     answer_number = [key for key, value in example.items() if value == answer][0]
 
-    docdoc = {'user_id': user_id, "quiz_question": question, "example": example, "answer": answer_number, "quiz_type": 1, "news_id": news_id}
+    docdoc = {'user_id': user_id, "quiz_question": question, "example": example, "answer": answer_number, "quiz_type": 5, "news_id": news_id}
     mongodb.quiz.insert_one(docdoc)
 
 
@@ -365,11 +367,11 @@ def choice_answer():
 
 # 4지선다 퀴즈 정답 제출 및 결과 저장
 def choice_quiz_answer(user_id, quiz_id, answer):
-    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": 1})
+    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": 5})
     if quiz.get("answer") == answer:
-        mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": 1, "answer":quiz.get("answer"), "quiz_type": 1, "my_answer":answer})
+        mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": 1, "answer":quiz.get("answer"), "quiz_type": 5, "my_answer":answer})
     else:
-        mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": 0, "answer":quiz.get("answer"), "quiz_type": 1, "my_answer":answer})
+        mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": 0, "answer":quiz.get("answer"), "quiz_type": 5, "my_answer":answer})
 
 
 
@@ -387,7 +389,7 @@ def list_answer():
 
 # 단어 목록 퀴즈 정답 제출 및 결과 저장
 def list_quiz_answer(user_id, quiz_id, answer):
-    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": 0})
+    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": 4})
     example = quiz.get("example")
     correct = 0
     result = {}
@@ -398,9 +400,9 @@ def list_quiz_answer(user_id, quiz_id, answer):
         else:
             result[ex] = 0
 
-    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": correct, "number": quiz.get("number")+1, "quiz_type": 0, "result":result})
+    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": correct, "number": quiz.get("number")+1, "quiz_type": 4, "result":result})
     random.shuffle(example)
-    mongodb.quiz.update_one({"_id": ObjectId(quiz_id), "quiz_type": 0}, {"$set": {"number": quiz.get("number")+1, "example": example}})
+    mongodb.quiz.update_one({"_id": ObjectId(quiz_id), "quiz_type": 4}, {"$set": {"number": quiz.get("number")+1, "example": example}})
 
     # if quiz.get("number")+1 == 3:
 
@@ -454,7 +456,7 @@ def retry_answer():
     user_id = quiz.get('user_id')
     quiz_type = quiz.get('quiz_type')
 
-    if quiz_type == 0:
+    if quiz_type == 4:
         quiz_length = len(list(mongodb.quiz_result.find({'quiz_id':quiz_id})))
         example = quiz.get('example')
         correct = 0
@@ -469,11 +471,11 @@ def retry_answer():
             'user_id' : user_id,
             'correct' : correct,
             'number' : quiz_length + 1,
-            'quiz_type' : 0,
+            'quiz_type' : 4,
             'result' : result
         }
         mongodb.quiz_result.insert_one(data)
-    elif quiz_type == 1 :
+    elif quiz_type == 5 :
         answer = quiz.get('answer')
         if my_answer == answer:
             mongodb.quiz_result.update_one({'quiz_id': quiz_id},{'$set':{'correct': 1,'my_answer': my_answer}})
