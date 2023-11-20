@@ -14,6 +14,8 @@ from bson.objectid import ObjectId
 from collections import Counter
 import random
 
+
+
 file_path = "category.json"
 
 app = Flask(__name__)
@@ -34,7 +36,6 @@ def news():
     body = request.json
     data = send_category_request(body)
     return jsonify(data), 200
-
 
 def send_category_request(body):
     data = {
@@ -103,6 +104,7 @@ def detail():
     }), 200
 
 
+
 # 본문에서 키워드 추출
 def extract_keywords(content):
     # 텍스트 전처리 (예: 특수 문자 제거, 소문자 변환)
@@ -164,9 +166,10 @@ def show_news_and_category_save():
     keywords = extract_keywords(content)
     # print(keywords)
     mongodb.users.update_one({"user_id": user_id},
-                             {"$push": {"keywords": {"$each": keywords}}}, upsert=True)
+                                  {"$push": {"keywords": {"$each": keywords}}}, upsert=True)
 
     return jsonify(data), 200
+
 
 
 # 카테고리 저장 및 news_id 저장
@@ -204,7 +207,8 @@ def recommend_news():
     # 몽고디비에서 해당 user_id의 문서를 조회하여 keyword 배열 가져오기
     user_collection = mongodb.users
     user_document = user_collection.find_one({"user_id": user_id})
-    keywords = user_document.get("keywords", [])
+    keywords = user_document.get("keywords",[])
+
 
     # keywords 배열의 중요한 부분 5개 선택
     important_keywords = select_important_keywords(keywords)
@@ -312,9 +316,9 @@ def create_word_list2_quiz(user_id, keywords, date):
     # 셔플
     random.shuffle(new_list)
 
-    doc = {'user_id': user_id, "quiz_question": "어떤 단어들을 보셨었나요", "example": new_list, "answer": keywords,
-           "quiz_type": "j7", "number": 0, "date": date}
+    doc = {'user_id': user_id, "quiz_question": "어떤 단어들을 보셨었나요", "example": new_list, "answer":keywords, "quiz_type": "j7", "number":0, "date":date}
     mongodb.quiz.insert_one(doc)
+
 
 
 # 선택형 퀴즈 생성 함수
@@ -330,16 +334,16 @@ def create_choice_quiz(user_id, content, answer, question, date):
     # 보기 + 정답
     all_choices = choices + [answer]
     random.shuffle(all_choices)
-
+    
     # 셔플
     example = {str(i + 1): choice for i, choice in enumerate(all_choices)}
     answer_number = [key for key, value in example.items() if value == answer][0]
 
     return {"quiz_question": question, "example": example, "answer": answer_number}
 
-
 # 키워드 뽑기
 def get_keywords(content, n):
+
     # 형태소 분석기
     okt = Okt()
 
@@ -355,6 +359,7 @@ def get_keywords(content, n):
     return top_nouns
 
 
+
 # 4지선다 퀴즈 정답 제출
 @app.route("/choice/answer/j3", methods=['POST'])
 def choice_answer():
@@ -365,6 +370,7 @@ def choice_answer():
     choice_quiz_answer(user_id, quiz_id, answer)
 
     return jsonify({"status": 200}), 200
+
 
 
 # 4지선다 퀴즈 정답 제출 및 결과 저장
@@ -379,6 +385,8 @@ def choice_quiz_answer(user_id, quiz_id, answer):
     mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": correct, "quiz_type": "j3"})
 
 
+
+
 # 단어 목록 퀴즈 정답 제출
 @app.route("/list/answer", methods=['POST'])
 def list_answer():
@@ -386,14 +394,9 @@ def list_answer():
     user_id = body.get("user_id")
     quiz_id = body.get("quiz_id")
     answer = body.get("answer")
+    list_quiz_answer(user_id, quiz_id, answer)
 
-    if list_quiz_answer(user_id, quiz_id, answer):
-        quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j4"})
-        quiz_list = json.dumps(quiz, default=str, ensure_ascii=False)
-        result = json.loads(quiz_list)
-        return jsonify(result), 200
-    else:
-        return jsonify({"status": 200}), 200
+    return jsonify({"status": 200}), 200
 
 
 # 단어 목록 퀴즈 정답 제출 및 결과 저장
@@ -425,29 +428,31 @@ def list_quiz_answer(user_id, quiz_id, answer):
     # if quiz.get("number")+1 == 3:
 
 
+
 # 뉴스 디테일 불러와서 사용
 def send_detail_request(news_id):
     data = {
-        "access_key": "9f7da60c-c993-459a-88c7-9a4230797087",
-        "argument": {
-            "news_ids": [
-                news_id
-            ],
-            "fields": [
-                "content",
-                "byline",
-                "category",
-                # "category_incident",
-                # "images",
-                # "provider_subject",
-                # "provider_news_id",
-                # "publisher_code"
-            ]
-        }
+      "access_key": "9f7da60c-c993-459a-88c7-9a4230797087",
+      "argument": {
+        "news_ids": [
+          news_id
+        ],
+        "fields": [
+          "content",
+          "byline",
+          "category",
+          # "category_incident",
+          # "images",
+          # "provider_subject",
+          # "provider_news_id",
+          # "publisher_code"
+        ]
+      }
     }
     response = requests.post('https://tools.kinds.or.kr/search/news', json=data)
     data = response.json()
     return data
+
 
 
 # 나의 퀴즈 보기
@@ -461,6 +466,7 @@ def my_quiz():
     return jsonify(result), 200
 
 
+
 # 퀴즈 다시 풀기
 @app.route("/quiz/retry/answer", methods=['POST'])
 def retry_answer():
@@ -471,7 +477,7 @@ def retry_answer():
     quiz_type = quiz.get('quiz_type')
 
     if quiz_type == "j4":
-        quiz_length = len(list(mongodb.quiz_result.find({'quiz_id': quiz_id})))
+        quiz_length = len(list(mongodb.quiz_result.find({'quiz_id':quiz_id})))
         example = quiz.get('example')
         correct = 0
         result = {}
@@ -481,19 +487,20 @@ def retry_answer():
                 correct += 1
                 result[i] = 1
         data = {
-            'quiz_id': quiz_id,
-            'user_id': user_id,
-            'correct': correct,
-            'number': quiz_length + 1,
-            'quiz_type': "j4",
-            'result': result
+            'quiz_id' : quiz_id,
+            'user_id' : user_id,
+            'correct' : correct,
+            'number' : quiz_length + 1,
+            'quiz_type' : "j4",
+            'result' : result
         }
         mongodb.quiz_result.insert_one(data)
-    elif quiz_type == "j3":
+    elif quiz_type == "j3" :
         answer = quiz.get('answer')
         if my_answer == answer:
-            mongodb.quiz_result.update_one({'quiz_id': quiz_id}, {'$set': {'correct': 1, 'my_answer': my_answer}})
+            mongodb.quiz_result.update_one({'quiz_id': quiz_id},{'$set':{'correct': 1,'my_answer': my_answer}})
     return jsonify({"status": 200}), 200
+
 
 
 # 퀴즈 시작하기
@@ -506,7 +513,7 @@ def quiz_start():
 
     quiz_create(user_id, news_lst, date)
 
-    quiz_lst = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3", "date": date})
+    quiz_lst = mongodb.quiz.find_one({"user_id" : user_id, "quiz_type" : "j3", "date": date})
 
     # return quiz_lst
 
@@ -526,8 +533,7 @@ def quiz_create(user_id, news_lst, date):
         # 단답형 문제 생성
         answer, question = question_generator(data.get("return_object").get("documents")[0].get("content"))
         # 4지선다 이야기 회상형 퀴즈 생성
-        dict1 = create_choice_quiz(user_id, data.get("return_object").get("documents")[0].get("content"), answer,
-                                   question, date)
+        dict1 = create_choice_quiz(user_id, data.get("return_object").get("documents")[0].get("content"), answer, question, date)
         result[str(cnt)] = dict1
         cnt += 1
 
@@ -544,10 +550,9 @@ def quiz_list(content_sum, user_id, date):
     keywords = get_keywords(content_sum, 10)
     # 단어 목록 퀴즈 생성
     create_word_list_quiz(user_id, keywords, date)
-    # 단어 목록 퀴즈 생성
-    create_word_list_quiz_z6(user_id, keywords, date)
     # 단어 목록 20 퀴즈 생성
     create_word_list2_quiz(user_id, keywords, date)
+
 
 
 # j4 불러오기
@@ -555,15 +560,13 @@ def quiz_list(content_sum, user_id, date):
 def quiz_start_j4():
     user_id = request.json.get('user_id')
     date = request.json.get('date')
-    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j4", "date": date})
+    quiz = mongodb.quiz.find_one({"user_id" : user_id, "quiz_type" : "j4", "date": date})
 
     # return quiz_lst
 
     quizList = json.dumps(quiz, default=str, ensure_ascii=False)
     result = json.loads(quizList)
     return jsonify(result), 200
-
-
 
 
 
@@ -641,8 +644,6 @@ def score_save(user_id, date):
     }
 
     mongodb.score.update_one({'user_id': user_id},{"date" : {date:dict1}}, upsert=True)
-
-
 
 
 
