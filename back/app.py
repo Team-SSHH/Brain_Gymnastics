@@ -69,10 +69,9 @@ def send_category_request(body):
 @app.route("/detail", methods=['Post'])
 def detail():
     body = request.json
-    print(body)
+
     news_id = body.get("news_id")
-    print(11111111111111111111111)
-    print(news_id)
+
     data = {
         "access_key": "9f7da60c-c993-459a-88c7-9a4230797087",
         "argument": {
@@ -97,10 +96,7 @@ def detail():
     content = data["return_object"]["documents"][0]["content"]
 
     # 키워드 추출
-    print(content)
     keywords = extract_keywords(content)
-    print("-------------------------")
-    print(keywords)
 
     return jsonify({
         "content": content,
@@ -149,7 +145,6 @@ def show_news_and_category_save():
     category = body.get('category', None)
     user_id = "dded"
     category_cnt(user_id, news_id, category)
-    Thread(target=quiz_create, args=(user_id, news_id)).start()
 
     data = {
         "access_key": "9f7da60c-c993-459a-88c7-9a4230797087",
@@ -185,10 +180,19 @@ def category_cnt(user_id, news_id, category_list):
     categories = json_data.get('category', [])
     for category in categories:
         if category in category_list:
+            # 먼저 news_id를 추가
             mongodb.categories.update_one(
                 {'user_id': user_id},
-                {'$push': {'current_news_id_lst': {'$each': [news_id], '$slice': -3}}, '$inc': {f'category.{category}': 1}}, upsert=True)
+                {'$addToSet': {'current_news_id_lst': news_id}},
+                upsert=True
+            )
 
+            # 그런 다음 배열의 크기를 조절
+            mongodb.categories.update_one(
+                {'user_id': user_id},
+                {'$push': {'current_news_id_lst': {'$each': [], '$slice': -3}}, '$inc': {f'category.{category}': 1}},
+                upsert=True
+            )
 
 
 # 유저의 카테고리에 있는거 키워드의 중요한 부분 5개
@@ -204,13 +208,10 @@ def recommend_news():
     user_collection = mongodb.users
     user_document = user_collection.find_one({"user_id": user_id})
     keywords = user_document.get("keywords",[])
-    print("keywordsdddddddddddddddddddddddddddd")
-    print(keywords)
+
 
     # keywords 배열의 중요한 부분 5개 선택
     important_keywords = select_important_keywords(keywords)
-    print("important_keywordssssssssssssssssssssssssssssssss")
-    print(important_keywords)
     query = "" if not important_keywords else " OR ".join(important_keywords)
 
     data = {
@@ -263,34 +264,34 @@ def select_important_keywords(keywords):
     return important_keywords
 
 
-# 퀴즈 생성 함수
-def quiz_create(user_id, news_id):
-    quiz = mongodb.quiz.find_one({'news_id': news_id})
-    if not quiz:
-        # 뉴스 디테일 불러오기
-        data = send_detail_request(news_id)
-       
-        # 키워드 추출
-        keywords = get_keywords(data.get("return_object").get("documents")[0].get("content"), 10)
-       
-        # 단답형 문제 생성
-        answer, question = question_generator(data.get("return_object").get("documents")[0].get("content"))
-        
-        # 단어 목록 퀴즈 생성
-        create_word_list_quiz(user_id, news_id, keywords)
-        # 단어 목록 20 퀴즈 생성
-        create_word_list2_quiz(user_id, news_id, keywords)
-        # 4지선다 이야기 회상형 퀴즈 생성
-        create_choice_quiz(user_id, news_id, keywords, answer, question)
+# # 퀴즈 생성 함수
+# def quiz_create(user_id, news_id):
+#     quiz = mongodb.quiz.find_one({'news_id': news_id})
+#     if not quiz:
+#         # 뉴스 디테일 불러오기
+#         data = send_detail_request(news_id)
+#
+#         # 키워드 추출
+#         keywords = get_keywords(data.get("return_object").get("documents")[0].get("content"), 10)
+#
+#         # 단답형 문제 생성
+#         answer, question = question_generator(data.get("return_object").get("documents")[0].get("content"))
+#
+#         # 단어 목록 퀴즈 생성
+#         create_word_list_quiz(user_id, news_id, keywords)
+#         # 단어 목록 20 퀴즈 생성
+#         create_word_list2_quiz(user_id, news_id, keywords)
+#         # 4지선다 이야기 회상형 퀴즈 생성
+#         create_choice_quiz(user_id, news_id, keywords, answer, question)
 
 
 # 단어 목록 퀴즈 생성 함수
-def create_word_list_quiz(user_id, news_id, keywords):
-    doc = {'user_id': user_id, "quiz_question": "해당 단어들을 기억하세요", "example": keywords, "answer":0, "quiz_type": 4, "news_id": news_id, "number":0}
+def create_word_list_quiz(user_id, keywords, date):
+    doc = {'user_id': user_id, "quiz_question": "해당 단어들을 기억하세요", "example": keywords, "answer":0, "quiz_type": "j4",  "number":0, "date":date}
     mongodb.quiz.insert_one(doc)
 
 # 단어 목록 퀴즈 20 생성 함수
-def create_word_list2_quiz(user_id, news_id, keywords):
+def create_word_list2_quiz(user_id, keywords, date):
     # 단어 사전 읽기/키워드에 있는 단어 제외
     with open('dict.txt', 'r', encoding='utf-8') as f:
         non_keywords = [line.strip() for line in f if line.strip() not in keywords]
@@ -307,13 +308,15 @@ def create_word_list2_quiz(user_id, news_id, keywords):
     # 셔플
     random.shuffle(new_list)
 
-    doc = {'user_id': user_id, "quiz_question": "어떤 단어들을 보셨었나요", "example": new_list, "answer":keywords, "quiz_type": 7, "news_id": news_id, "number":0}
+    doc = {'user_id': user_id, "quiz_question": "어떤 단어들을 보셨었나요", "example": new_list, "answer":keywords, "quiz_type": "j7", "number":0, "date":date}
     mongodb.quiz.insert_one(doc)
 
 
 
 # 선택형 퀴즈 생성 함수
-def create_choice_quiz(user_id, news_id, keywords, answer, question):
+def create_choice_quiz(user_id, content, answer, question, date):
+    keywords = get_keywords(content, 10)
+
     # 보기 생성
     other_words = [word for word in keywords if word != answer]
 
@@ -328,10 +331,7 @@ def create_choice_quiz(user_id, news_id, keywords, answer, question):
     example = {str(i + 1): choice for i, choice in enumerate(all_choices)}
     answer_number = [key for key, value in example.items() if value == answer][0]
 
-    docdoc = {'user_id': user_id, "quiz_question": question, "example": example, "answer": answer_number, "quiz_type": 5, "news_id": news_id}
-    mongodb.quiz.insert_one(docdoc)
-
-
+    return {"quiz_question": question, "example": example, "answer": answer_number}
 
 # 키워드 뽑기
 def get_keywords(content, n):
@@ -353,7 +353,7 @@ def get_keywords(content, n):
 
 
 # 4지선다 퀴즈 정답 제출
-@app.route("/choice/answer", methods=['POST'])
+@app.route("/choice/answer/j3", methods=['POST'])
 def choice_answer():
     body = request.json
     user_id = body.get("user_id")
@@ -367,11 +367,15 @@ def choice_answer():
 
 # 4지선다 퀴즈 정답 제출 및 결과 저장
 def choice_quiz_answer(user_id, quiz_id, answer):
-    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": 5})
-    if quiz.get("answer") == answer:
-        mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": 1, "answer":quiz.get("answer"), "quiz_type": 5, "my_answer":answer})
-    else:
-        mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": 0, "answer":quiz.get("answer"), "quiz_type": 5, "my_answer":answer})
+    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j3"})
+    correct = 0
+
+    for i in range(1, 4):
+        if quiz.get("result").get(str(i)).get("answer") == answer.get(str(i)):
+            correct += 1
+
+    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": correct, "quiz_type": "j3"})
+
 
 
 
@@ -389,7 +393,7 @@ def list_answer():
 
 # 단어 목록 퀴즈 정답 제출 및 결과 저장
 def list_quiz_answer(user_id, quiz_id, answer):
-    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": 4})
+    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j4"})
     example = quiz.get("example")
     correct = 0
     result = {}
@@ -400,9 +404,9 @@ def list_quiz_answer(user_id, quiz_id, answer):
         else:
             result[ex] = 0
 
-    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": correct, "number": quiz.get("number")+1, "quiz_type": 4, "result":result})
+    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "correct": correct, "number": quiz.get("number")+1, "quiz_type": "j4", "result":result})
     random.shuffle(example)
-    mongodb.quiz.update_one({"_id": ObjectId(quiz_id), "quiz_type": 4}, {"$set": {"number": quiz.get("number")+1, "example": example}})
+    mongodb.quiz.update_one({"_id": ObjectId(quiz_id), "quiz_type": "j4"}, {"$set": {"number": quiz.get("number")+1, "example": example}})
 
     # if quiz.get("number")+1 == 3:
 
@@ -440,7 +444,6 @@ def my_quiz():
     user_id = request.json.get('user_id')
     user = list(mongodb.quiz.find({'user_id': user_id}))
 
-    print(user)
     quizList = json.dumps(user, default=str, ensure_ascii=False)
     result = json.loads(quizList)
     return jsonify(result), 200
@@ -456,7 +459,7 @@ def retry_answer():
     user_id = quiz.get('user_id')
     quiz_type = quiz.get('quiz_type')
 
-    if quiz_type == 4:
+    if quiz_type == "j4":
         quiz_length = len(list(mongodb.quiz_result.find({'quiz_id':quiz_id})))
         example = quiz.get('example')
         correct = 0
@@ -471,11 +474,11 @@ def retry_answer():
             'user_id' : user_id,
             'correct' : correct,
             'number' : quiz_length + 1,
-            'quiz_type' : 4,
+            'quiz_type' : "j4",
             'result' : result
         }
         mongodb.quiz_result.insert_one(data)
-    elif quiz_type == 5 :
+    elif quiz_type == "j3" :
         answer = quiz.get('answer')
         if my_answer == answer:
             mongodb.quiz_result.update_one({'quiz_id': quiz_id},{'$set':{'correct': 1,'my_answer': my_answer}})
@@ -483,7 +486,70 @@ def retry_answer():
 
 
 
+# 퀴즈 시작하기
+@app.route("/quiz/start", methods=['POST'])
+def quiz_start():
+    user_id = request.json.get('user_id')
+    date = request.json.get('date')
+    category = mongodb.categories.find_one({'user_id': user_id})
+    news_lst = category.get("current_news_id_lst")
 
+    quiz_create(user_id, news_lst, date)
+
+    quiz_lst = mongodb.quiz.find_one({"user_id" : user_id, "quiz_type" : "j3", "date": date})
+
+    # return quiz_lst
+
+    quizList = json.dumps(quiz_lst, default=str, ensure_ascii=False)
+    result = json.loads(quizList)
+    return jsonify(result), 200
+
+
+def quiz_create(user_id, news_lst, date):
+    content_sum = ""
+    result = {}
+    cnt = 1
+    for news in news_lst:
+        # 디테일 불러오기
+        data = send_detail_request(news)
+        content_sum += data.get("return_object").get("documents")[0].get("content")
+        # 단답형 문제 생성
+        answer, question = question_generator(data.get("return_object").get("documents")[0].get("content"))
+        # 4지선다 이야기 회상형 퀴즈 생성
+        dict1 = create_choice_quiz(user_id, data.get("return_object").get("documents")[0].get("content"), answer, question, date)
+        result[str(cnt)] = dict1
+        cnt += 1
+
+    # 비동기
+    Thread(target=quiz_list, args=(content_sum, user_id, date)).start()
+
+    doc = {'user_id': user_id, "quiz_type": "j3", "date": date, "result": result}
+    mongodb.quiz.insert_one(doc)
+
+
+# 단어 퀴즈 생성 함수
+def quiz_list(content_sum, user_id, date):
+    # 키워드 추출
+    keywords = get_keywords(content_sum, 10)
+    # 단어 목록 퀴즈 생성
+    create_word_list_quiz(user_id, keywords, date)
+    # 단어 목록 20 퀴즈 생성
+    create_word_list2_quiz(user_id, keywords, date)
+
+
+
+# j4 불러오기
+@app.route("/quiz/start/j4", methods=['POST'])
+def quiz_start_j4():
+    user_id = request.json.get('user_id')
+    date = request.json.get('date')
+    quiz = mongodb.quiz.find_one({"user_id" : user_id, "quiz_type" : "j4", "date": date})
+
+    # return quiz_lst
+
+    quizList = json.dumps(quiz, default=str, ensure_ascii=False)
+    result = json.loads(quizList)
+    return jsonify(result), 200
 
 
 # 서버 올릴 때 설정

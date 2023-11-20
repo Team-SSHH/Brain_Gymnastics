@@ -22,8 +22,8 @@ def question_generator(context):
     inputs = torch.tensor([encoded_context.ids])
     attention_mask = torch.tensor([[1] * len(inputs[0])])
     eos_token_id = tokenizer.token_to_id("</s>")
-    max_length = len(inputs[0]) + 200  # 인풋 길이 설정
-    outputs = model.generate(inputs, attention_mask=attention_mask, pad_token_id=eos_token_id, max_length=max_length, num_return_sequences=1, num_beams=1)
+    max_length = len(inputs[0]) + 300  # 인풋 길이 설정
+    outputs = model.generate(inputs, attention_mask=attention_mask, pad_token_id=eos_token_id, max_length=max_length, num_return_sequences=3, num_beams=3)
 
     output_str  = tokenizer.decode(outputs[-1].tolist(), skip_special_tokens=True)
 
