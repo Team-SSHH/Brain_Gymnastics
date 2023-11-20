@@ -603,14 +603,13 @@ def answer_j7():
     quiz_id = request.json.get("quiz_id")
     answer_o = request.json.get("answer_o")
     answer_x = request.json.get("answer_x")
-    date = request.json.get("date")
-    quiz_answer_j7(user_id, quiz_id, answer_o, answer_x, date)
+    quiz_answer_j7(user_id, quiz_id, answer_o, answer_x)
     return jsonify({"status":200}), 200
 
 
 # j7 정답 처리 및 결과 저장
 
-def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x, date):
+def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x):
     quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j7"})
     score = 0
     for ans in answer_o:
@@ -623,7 +622,7 @@ def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x, date):
     if score < 0:
         score = 0
 
-    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "score": score, "quiz_type": "j7", "date" : date})
+    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "score": score, "quiz_type": "j7", "date" : quiz.get("date")})
     score_save(user_id, date)
 
 
