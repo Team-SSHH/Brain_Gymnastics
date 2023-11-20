@@ -290,6 +290,12 @@ def create_word_list_quiz(user_id, keywords, date):
     doc = {'user_id': user_id, "quiz_question": "해당 단어들을 기억하세요", "example": keywords, "answer":0, "quiz_type": "j4",  "number":0, "date":date}
     mongodb.quiz.insert_one(doc)
 
+# 단어 목록 퀴즈 j6 생성 함수
+def create_word_list_quiz_z6(user_id, keywords, date):
+    doc = {'user_id': user_id, "quiz_question": "해당 단어들을 기억하세요", "example": keywords, "answer":0, "quiz_type": "j6",  "number":0, "date":date}
+    mongodb.quiz.insert_one(doc)
+
+
 # 단어 목록 퀴즈 20 생성 함수
 def create_word_list2_quiz(user_id, keywords, date):
     # 단어 사전 읽기/키워드에 있는 단어 제외
@@ -533,6 +539,8 @@ def quiz_list(content_sum, user_id, date):
     keywords = get_keywords(content_sum, 10)
     # 단어 목록 퀴즈 생성
     create_word_list_quiz(user_id, keywords, date)
+    # 단어 목록 퀴즈 생성
+    create_word_list_quiz_z6(user_id, keywords, date)
     # 단어 목록 20 퀴즈 생성
     create_word_list2_quiz(user_id, keywords, date)
 
@@ -550,6 +558,61 @@ def quiz_start_j4():
     quizList = json.dumps(quiz, default=str, ensure_ascii=False)
     result = json.loads(quizList)
     return jsonify(result), 200
+
+
+
+
+
+
+
+
+
+
+
+
+# j7 불러오기
+@app.route("/quiz/start/j7", methods=['POST'])
+def quiz_start_j7():
+    user_id = request.json.get('user_id')
+    date = request.json.get('date')
+    quiz = mongodb.quiz.find_one({"user_id" : user_id, "quiz_type" : "j7", "date": date})
+
+    # return quiz_lst
+
+    quizList = json.dumps(quiz, default=str, ensure_ascii=False)
+    result = json.loads(quizList)
+    return jsonify(result), 200
+
+
+
+# j7 정답 제출
+@app.route("/quiz/asnwer/j7", methods=['POST'])
+def answer_j7():
+    user_id = request.json.get('user_id')
+    quiz_id = request.json.get("quiz_id")
+    answer_o = request.json.get("answer_o")
+    answer_x = request.json.get("answer_x")
+    quiz_answer_j7(user_id, quiz_id, answer_o, answer_x)
+
+    return jsonify({"status":200}), 200
+
+
+# j7 정답 처리 및 결과 저장
+def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x):
+    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j7"})
+    score = 0
+    for ans in answer_o:
+        if ans in quiz.get("answer"):
+            score += 1
+    for ans in answer_x:
+        if ans not in quiz.get("answer"):
+            score +=1
+    score -= 10
+    if score < 0:
+        score = 0
+
+    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "score": score, "quiz_type": "j7"})
+
 
 
 # 서버 올릴 때 설정
