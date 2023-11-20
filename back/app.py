@@ -185,7 +185,7 @@ def category_cnt(user_id, news_id, category_list):
     categories = json_data.get('category', [])
     for category in categories:
         if category in category_list:
-            mongodb.categories.update_one({'user_id': user_id}, {'current_news_id':news_id}, {'$inc': {f'category.{category}': 1}}, upsert=True)
+            mongodb.categories.update_one({'user_id': user_id}, {'current_news_id_lst':news_id}, {'$inc': {f'category.{category}': 1}}, upsert=True)
 
 
 
