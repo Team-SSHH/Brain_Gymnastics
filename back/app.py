@@ -543,6 +543,42 @@ def quiz_create(user_id, news_lst, date):
     doc = {'user_id': user_id, "quiz_type": "j3", "date": date, "result": result}
     mongodb.quiz.insert_one(doc)
 
+# j6 불러오기 GET
+@app.route("/quiz/start/j6", methods=['GET'])
+def quiz_get_j6():
+    user_id = request.json.get('user_id')
+    date = request.json.get('date')
+    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j6", "date": date})
+    # return quiz_lst
+    quizList = json.dumps(quiz, default=str, ensure_ascii=False)
+    result = json.loads(quizList)
+    return jsonify(result), 200
+
+# j6 풀기 POST
+@app.route("/quiz/start/j6", methods=['POST'])
+def quiz_solve_j6():
+    body = request.json
+    user_id = body.get("user_id")
+    quiz_id = body.get("quiz_id")
+    answer = body.get("answer")
+
+    quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j6"})
+    example = quiz.get("example")
+    correct = 0
+    result = {}
+    for ex in example:
+        if ex in answer:
+            result[ex] = 1
+            correct += 1
+        else:
+            result[ex] = 0
+
+    mongodb.quiz_result.insert_one(
+        {"quiz_id": quiz_id, "user_id": user_id, "correct": correct, "number": quiz.get("number") + 1,
+         "quiz_type": "j6", "result": result})
+
+    return jsonify({"status": 200}), 200
+
 
 # 단어 퀴즈 생성 함수
 def quiz_list(content_sum, user_id, date):
