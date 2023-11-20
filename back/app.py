@@ -589,13 +589,14 @@ def answer_j7():
     quiz_id = request.json.get("quiz_id")
     answer_o = request.json.get("answer_o")
     answer_x = request.json.get("answer_x")
-    quiz_answer_j7(user_id, quiz_id, answer_o, answer_x)
+    date = request.json.get("date")
+    quiz_answer_j7(user_id, quiz_id, answer_o, answer_x, date)
 
     return jsonify({"status":200}), 200
 
 
 # j7 정답 처리 및 결과 저장
-def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x):
+def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x, date):
     quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j7"})
     score = 0
     for ans in answer_o:
@@ -608,7 +609,41 @@ def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x):
     if score < 0:
         score = 0
 
-    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "score": score, "quiz_type": "j7"})
+    mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "score": score, "quiz_type": "j7", "date":date})
+    score_save(user_id, date)
+
+
+def score_save(user_id, date):
+    j3 = mongodb.quiz_result.find_one({"user_id": user_id, "quiz_type":"j3", "date":date})
+    j3_score = j3.get("correct")*10
+    j4_lst = mongodb.quiz_result.find({"user_id": user_id, "quiz_type":"j4", "date":date})
+    j4_score = 0
+    for j4 in j4_lst:
+        j4_score += j4.get("correct")
+
+    j6 = mongodb.quiz_result.find_one({"user_id": user_id, "quiz_type":"j6", "date":date})
+    j6_score = j6.get("correct")
+
+    j7 = mongodb.quiz_result.find_one({"user_id": user_id, "quiz_type":"j7", "date":date})
+    j7_score = j7.get("score")
+
+    j9_score =8.15+5.5+j3_score+j4_score+6.85+j6_score+j7_score+1.75
+    dict1 = {
+        "j1":8.15,
+        "j2":5.5,
+        "j3":j3_score,
+        "j4":j4_score,
+        "j5":6.85,
+        "j6":j6_score,
+        "j7":j7_score,
+        "j8":1.75,
+        "j9":j9_score
+    }
+
+    mongodb.score.update_one({'user_id': user_id},{"date" : {date:dict1}}, upsert=True)
+
+
+
 
 
 
