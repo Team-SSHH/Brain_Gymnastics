@@ -410,8 +410,6 @@ def send_detail_request(news_id):
 
 
 
-
-
 # 나의 퀴즈 보기
 @app.route("/user/myQuiz", methods=['POST'])
 def my_quiz():
