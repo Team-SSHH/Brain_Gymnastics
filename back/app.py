@@ -418,7 +418,9 @@ def my_quiz():
 
     print(user)
     quizList = json.dumps(user, default=str, ensure_ascii=False)
-    return quizList
+    result = json.loads(quizList)
+    return jsonify(result), 200
+
 
 
 # 퀴즈 다시 풀기
