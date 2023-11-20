@@ -10,6 +10,14 @@ def question_generator(context):
     # 모델 불러오기
     model = torch.load('brain.pth')
 
+    # # 모델을 불러옵니다.
+    # model = GPT2LMHeadModel.from_pretrained("csi9876/brain", use_auth_token="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")
+    # # 미리 학습된 가중치를 불러옵니다.
+    # weights = torch.load('QG_kogpt2.pth', map_location=torch.device('cpu'))
+    # # 가중치를 모델에 적용합니다.
+    # model.load_state_dict(weights, strict=False)
+    # torch.save(model, 'brain.pth')
+
     encoded_context = tokenizer.encode(context)
     inputs = torch.tensor([encoded_context.ids])
     attention_mask = torch.tensor([[1] * len(inputs[0])])

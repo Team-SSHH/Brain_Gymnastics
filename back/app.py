@@ -276,7 +276,8 @@ def quiz_create(user_id, news_id):
         
         # 단어 목록 퀴즈 생성
         create_word_list_quiz(user_id, news_id, keywords)
-        
+        # 단어 목록 20 퀴즈 생성
+        create_word_list2_quiz(user_id, news_id, keywords)
         # 4지선다 이야기 회상형 퀴즈 생성
         create_choice_quiz(user_id, news_id, keywords, answer, question)
 
@@ -284,6 +285,27 @@ def quiz_create(user_id, news_id):
 # 단어 목록 퀴즈 생성 함수
 def create_word_list_quiz(user_id, news_id, keywords):
     doc = {'user_id': user_id, "quiz_question": "해당 단어들을 기억하세요", "example": keywords, "answer":0, "quiz_type": 0, "news_id": news_id, "number":0}
+    mongodb.quiz.insert_one(doc)
+
+# 단어 목록 퀴즈 20 생성 함수
+def create_word_list2_quiz(user_id, news_id, keywords):
+    # 단어 사전 읽기/키워드에 있는 단어 제외
+    with open('dict.txt', 'r', encoding='utf-8') as f:
+        non_keywords = [line.strip() for line in f if line.strip() not in keywords]
+
+    # 10개 선택
+    random_words = random.sample(non_keywords, 10)
+
+    # 보기 리스트
+    new_list = list(random_words)
+
+    # 보기 리스트 + 정답
+    new_list.extend(keywords)
+
+    # 셔플
+    random.shuffle(new_list)
+
+    doc = {'user_id': user_id, "quiz_question": "어떤 단어들을 보셨었나요", "example": new_list, "answer":keywords, "quiz_type": 2, "news_id": news_id, "number":0}
     mongodb.quiz.insert_one(doc)
 
 
