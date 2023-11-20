@@ -29,3 +29,6 @@ yarn-error.log*
 __pycache__
 .venv
 venv
+
+brain.pth
+.brain.pth
