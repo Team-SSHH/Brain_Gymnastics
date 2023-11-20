@@ -141,7 +141,7 @@ def show_news_and_category_save():
     body = request.json
     news_id = body.get('news_id', None)
     category = body.get('category', None)
-    user_id = "dded"
+    user_id = body.get('user_id', None)
     category_cnt(user_id, news_id, category)
 
     data = {
@@ -196,8 +196,7 @@ def category_cnt(user_id, news_id, category_list):
 @app.route("/recommend/my", methods=['POST'])
 def recommend_news():
     body = request.json
-    user_id = "dded"
-    # user_id = body.get("dded", None)
+    user_id = body.get("dded", None)
     today = date.today().strftime("%Y-%m-%d")
     tomorrow = (date.today() + timedelta(days=1)).strftime("%Y-%m-%d")
 
@@ -623,7 +622,7 @@ def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x):
         score = 0
 
     mongodb.quiz_result.insert_one({"quiz_id": quiz_id, "user_id": user_id, "score": score, "quiz_type": "j7", "date" : quiz.get("date")})
-    score_save(user_id, date)
+    score_save(user_id, quiz.get("date"))
 
 
 def score_save(user_id, date):
@@ -652,9 +651,8 @@ def score_save(user_id, date):
         "j8":1.75,
         "j9":j9_score
     }
-
-    mongodb.score.update_one({'user_id': user_id},{"date": {date: dict1}}, upsert=True)
-
+    print(dict1)
+    mongodb.score.update_one({'user_id': user_id}, {"$set": {"date": {date: dict1}}}, upsert=True)
 
 
 
