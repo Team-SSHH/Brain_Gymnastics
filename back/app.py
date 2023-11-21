@@ -481,13 +481,13 @@ def retry_answer():
 @app.route("/quiz/start", methods=['POST'])
 def quiz_start():
     user_id = request.json.get('user_id')
-    date = request.json.get('date')
+    today = date.today().strftime("%Y-%m-%d")
     category = mongodb.categories.find_one({'user_id': user_id})
     news_lst = category.get("current_news_id_lst")
 
-    quiz_create(user_id, news_lst, date)
+    quiz_create(user_id, news_lst, today)
 
-    quiz_lst = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3", "date": date})
+    quiz_lst = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3", "date": today})
 
     # return quiz_lst
 
@@ -522,8 +522,9 @@ def quiz_create(user_id, news_lst, date):
 @app.route("/quiz/start/j6", methods=['POST'])
 def quiz_get_j6():
     user_id = request.json.get('user_id')
-    date = request.json.get('date')
-    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j6", "date": date})
+    today = date.today().strftime("%Y-%m-%d")
+    # date = request.json.get('date')
+    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j6", "date": today})
     # return quiz_lst
     quizList = json.dumps(quiz, default=str, ensure_ascii=False)
     result = json.loads(quizList)
@@ -571,8 +572,9 @@ def quiz_list(content_sum, user_id, date):
 @app.route("/quiz/start/j4", methods=['POST'])
 def quiz_start_j4():
     user_id = request.json.get('user_id')
-    date = request.json.get('date')
-    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j4", "date": date})
+    today = date.today().strftime("%Y-%m-%d")
+    # date = request.json.get('date')
+    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j4", "date": today})
 
     # return quiz_lst
 
@@ -586,8 +588,9 @@ def quiz_start_j4():
 @app.route("/quiz/start/j7", methods=['POST'])
 def quiz_start_j7():
     user_id = request.json.get('user_id')
-    date = request.json.get('date')
-    quiz = mongodb.quiz.find_one({"user_id" : user_id, "quiz_type" : "j7", "date": date})
+    # date = request.json.get('date')
+    today = date.today().strftime("%Y-%m-%d")
+    quiz = mongodb.quiz.find_one({"user_id" : user_id, "quiz_type" : "j7", "date": today})
 
     # return quiz_lst
 
@@ -641,7 +644,6 @@ def score_save(user_id, date):
     j7 = mongodb.quiz_result.find_one({"user_id": user_id, "quiz_type":"j7", "date":date})
     j7_score = j7.get("score")
 
-    j9_score =8.15+5.5+j3_score+j4_score+6.85+j6_score+j7_score+1.75
     dict1 = {
         "j1":8.15,
         "j2":5.5,
@@ -651,7 +653,7 @@ def score_save(user_id, date):
         "j6":j6_score,
         "j7":j7_score,
         "j8":1.75,
-        "j9":j9_score
+        "j9":172.96
     }
     print(dict1)
     mongodb.score.update_one({'user_id': user_id}, {"$set": {"date": {date: dict1}}}, upsert=True)
