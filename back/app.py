@@ -37,13 +37,15 @@ def news():
 
 
 def send_category_request(body):
+    today = date.today().strftime("%Y-%m-%d")
+    tomorrow = (date.today() + timedelta(days=1)).strftime("%Y-%m-%d")
     data = {
         "access_key": "9f7da60c-c993-459a-88c7-9a4230797087",
         "argument": {
             "query": "",
             "published_at": {
-                "from": body['from'],
-                "until": body['until']
+                "from": today,
+                "until": tomorrow
             },
             "provider": [],
             "category": body['category'],
