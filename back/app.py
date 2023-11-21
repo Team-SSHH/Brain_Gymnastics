@@ -524,7 +524,7 @@ def quiz_start():
     category = mongodb.categories.find_one({'user_id': user_id})
     news_lst = category.get("current_news_id_lst")
 
-    quiz_create(user_id, news_lst, today)
+    Thread(target=quiz_create, args=(user_id, news_lst, today)).start()
     quiz_lst = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3", "date": today})
 
     # return quiz_lst
@@ -553,7 +553,6 @@ def quiz_create(user_id, news_lst, date):
 
     # 비동기
     Thread(target=quiz_list, args=(content_sum, user_id, date)).start()
-
     # doc = {'user_id': user_id, "quiz_type": "j3", "date": date, "result": result}
     # mongodb.quiz.insert_one(doc)
 
@@ -721,5 +720,5 @@ def my_score():
 
 
 # 서버 올릴 때 설정
-# if __name__=='__main__':
-#     app.run(host='0.0.0.0', port=5000, debug=True)
+if __name__=='__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)

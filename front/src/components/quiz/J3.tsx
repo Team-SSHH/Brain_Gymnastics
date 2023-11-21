@@ -8,6 +8,10 @@ interface QuizStepProps {
   data: any;
   id: string;
 }
+interface QuizValue {
+  quiz_question: string;
+  example: { [key: string]: string };
+}
 
 function J3({ current, setCurrent, data, id }: QuizStepProps) {
   const [answer, setAnswer] = useState(new Map<string, string>());
@@ -29,14 +33,19 @@ function J3({ current, setCurrent, data, id }: QuizStepProps) {
     <div>
       <div>
         <p>MMSE-KC</p>
-        {data.result.map((que: any) => (
-          <div>
-            <p>{que.quiz_question}</p>
-            {Object.entries(que.example).map(([key, value]) => (
-              <span key={key}>{`${key} : ${value}`}</span>
-            ))}
-          </div>
-        ))}
+        {Object.entries(data.result).map(([key, value]) => {
+          const quizValue = value as QuizValue;
+          return (
+            <div key={key}>
+              <span>{`${key}번 ${quizValue.quiz_question}`}</span>
+              {Object.entries(quizValue.example).map(([key, value]) => (
+                <div key={key}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;{`${key} : ${value}`}
+                </div>
+              ))}
+            </div>
+          );
+        })}
         {/* <Button onClick={onClick}></Button> */}
       </div>
     </div>
