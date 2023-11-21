@@ -113,20 +113,20 @@ def createQuiz4(user_id, content, date):
         # 4지선다 이야기 회상형 퀴즈 생성
         dict1 = create_choice_quiz(user_id, content, answer,
                                    question, date)
-        result[1] = dict1
+        result[str(1)] = dict1
 
         doc = {'user_id': user_id, "quiz_type": "j3", "date": date, "result": result}
         mongodb.quiz.insert_one(doc)
-    elif len(quiz) == 3:
+    elif len(quiz.get("result")) == 3:
         result = quiz.get("result")
         # 단답형 문제 생성
         answer, question = question_generator(content)
         # 4지선다 이야기 회상형 퀴즈 생성
         dict1 = create_choice_quiz(user_id, content, answer,
                                    question, date)
-        result[1] = result[2]
-        result[2] = result[3]
-        result[3] = dict1
+        result['1'] = result['2']
+        result['2'] = result['3']
+        result['3'] = dict1
 
         mongodb.quiz.update_one({"user_id": user_id, "quiz_type": "j3"}, {"$set": {"result": result}})
     else:
@@ -136,7 +136,7 @@ def createQuiz4(user_id, content, date):
         # 4지선다 이야기 회상형 퀴즈 생성
         dict1 = create_choice_quiz(user_id, content, answer,
                                    question, date)
-        result[len(quiz) + 1] = dict1
+        result[str(len(quiz.get("result"))+1)] = dict1
 
         mongodb.quiz.update_one({"user_id": user_id, "quiz_type": "j3"}, {"$set": {"result": result}})
 
@@ -539,7 +539,7 @@ def quiz_create(user_id, news_lst, date):
     # result = {}
     # cnt = 1
     for news in news_lst:
-        # 디테일 불러오기
+        # 뉴스 콘텐츠 불러오기
         data = send_detail_request(news)
         content_sum += data.get("return_object").get("documents")[0].get("content")
 
@@ -652,7 +652,6 @@ def answer_j7():
 
 
 # j7 정답 처리 및 결과 저장
-
 def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x):
     quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j7"})
     score = 0
@@ -722,5 +721,5 @@ def my_score():
 
 
 # 서버 올릴 때 설정
-if __name__=='__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+# if __name__=='__main__':
+#     app.run(host='0.0.0.0', port=5000, debug=True)
