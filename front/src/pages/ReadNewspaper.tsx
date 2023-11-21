@@ -21,7 +21,7 @@ const ReadNewspaper = () => {
       console.log(data);
     };
     getNews();
-  }, [state]);
+  }, []);
 
   return (
     <div className="h-full overflow-y-hidden">
@@ -33,7 +33,7 @@ const ReadNewspaper = () => {
         <div className="bg-gray rounded-3xl w-4/5 h-full p-14">
           {data && (
             <>
-              <div className="font-extrabold text-5xl text-center pt-10">
+              <div className="font-extrabold text-5xl text-center pt-10 leading-loose">
                 {data.title}
               </div>
               <br />
