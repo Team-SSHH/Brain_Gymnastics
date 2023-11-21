@@ -11,19 +11,6 @@ import {
 
 import Graph from "../components/Graph";
 
-// userData api 연결해서 받아올거
-// const userData = [
-//   { name: "j1", value: 2.9 },
-//   { name: "j2", value: 5.2 },
-//   { name: "j3", value: 12.5 },
-//   { name: "j4", value: 15.6 },
-//   { name: "j5", value: 6.1 },
-//   { name: "j6", value: 1.2 },
-//   { name: "j7", value: 3.5 },
-//   { name: "j8", value: 4.3 },
-//   { name: "j9", value: 57 },
-// ];
-
 interface Score {
   date: string;
   sum: number;
@@ -86,7 +73,7 @@ function ProfilePage() {
       <div>프로필 페이지입니다. 날짜별 검사 종합지수가 보여요</div>
       {/* 평균 비교하는 차트 입니다. */}
       <LineChart
-        width={500}
+        width={800}
         height={300}
         data={userData}
         onClick={handleXAxisClick}
@@ -97,7 +84,7 @@ function ProfilePage() {
         <Line
           type="monotone"
           dataKey={() => average}
-          stroke="#ef6b00"
+          stroke="#ff0000"
           name="종합지수평균"
         />
         <CartesianGrid stroke="#ccc" />
