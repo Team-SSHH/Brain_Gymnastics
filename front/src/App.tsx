@@ -8,6 +8,8 @@ import ProfilePage from "./pages/ProfilePage";
 import QuizPage from "./pages/QuizPage";
 import ReadNewsPage from "./pages/ReadNewsPage";
 import ReadNewspaper from "./pages/ReadNewspaper";
+import ListenNewsPage from "./pages/ListenNewsPage";
+import ListenNewspaper from "./pages/ListenNewspaper";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/readNews" element={<ReadNewsPage />} />
           <Route path="/ReadNewspaper/:id" element={<ReadNewspaper />} />
+          <Route path="/listenNews" element={<ListenNewsPage />} />
+          <Route path="/ListenNewspaper/:id" element={<ListenNewspaper />} />
         </Routes>
       </div>
     </BrowserRouter>

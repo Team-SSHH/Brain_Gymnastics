@@ -20,7 +20,7 @@ function MainPage() {
       </Link>
       <div className="bg-secondary flex items-center justify-center w-10/12 rounded-3xl p-5 h-2/3">
         <Link
-          to="/readNews"
+          to="/listenNews"
           className="w-1/3 flex flex-col items-center justify-between h-2/3  hover:scale-110"
         >
           <img src={main1} alt="뉴스 듣기" className="w-3/5 no-drag" />
