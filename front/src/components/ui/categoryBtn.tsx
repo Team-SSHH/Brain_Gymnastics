@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal } from "antd";
-import { getCategoryNews } from "../../utiles/news";
+import { getCategoryNews, recommendNews } from "../../utiles/news";
 import { NewsType } from "../../types/index";
 import { useNavigate } from "react-router-dom";
 import { LuNewspaper } from "react-icons/lu";
@@ -19,7 +19,13 @@ const CategoryBtn: React.FC<Props> = ({ name }) => {
   };
 
   const getNews = async () => {
-    const response = await getCategoryNews([name], 1);
+    let response;
+    if (name === "맞춤") {
+      response = await recommendNews("김동현");
+    } else {
+      response = await getCategoryNews([name], 1);
+    }
+    // const response = await getCategoryNews([name], 1);
     console.log(response.data.return_object.documents);
     setNews(response.data.return_object.documents);
   };

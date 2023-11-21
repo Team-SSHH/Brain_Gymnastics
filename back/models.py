@@ -11,18 +11,18 @@ tokenizer = SentencePieceBPETokenizer.from_file(vocab_filename="tokenizer/vocab.
 
 # 모델을 불러옵니다.
 # model = GPT2LMHeadModel.from_pretrained("csi9876/brain", use_auth_token="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")
-
+model = GPT2LMHeadModel.from_pretrained("taeminlee/kogpt2")
 # 미리 학습된 가중치를 불러옵니다.
-# weights = torch.load('QG_kogpt2.pth', map_location=torch.device('cpu'))
+weights = torch.load('QG_kogpt2.pth', map_location=torch.device('cpu'))
 
 # 불러온 가중치 중 모델의 키와 일치하는 가중치만 선택
 # weights = {k: v for k, v in weights.items() if k in model.state_dict()}
 
 # 가중치를 모델에 적용합니다.
-# model.load_state_dict(weights, strict=False)
+model.load_state_dict(weights, strict=False)
 
 
-model = torch.load('brain.pth')
+# model = torch.load('brain.pth')
 
 # torch.save(model, 'brain.pth')
 context = "애플의 근거리무선통신(NFC) 결제 서비스 ‘애플페이’가 21일 한국에 상륙했다. NFC 단말기가 설치된 편의점과 프랜차이즈 카페 등에서, 현대카드로만 쓸 수 있어 초기 사용은 제한적인 편이다."
