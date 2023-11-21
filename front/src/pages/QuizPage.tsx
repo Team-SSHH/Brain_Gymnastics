@@ -37,7 +37,7 @@ function QuizPage() {
   };
 
   useEffect(() => {
-    // getj3();
+    getj3();
   }, []);
   return (
     <div>
