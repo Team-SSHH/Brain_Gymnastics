@@ -13,15 +13,24 @@ import { startQuiz } from "../utiles/news";
 import { Button } from "antd";
 import { position } from "stylis";
 
+interface j3 {
+  result: {};
+}
+
 function QuizPage() {
   const [current, setCurrent] = useState(0);
+  const [j6, setJ6] = useState<j3>();
+  const [id, setId] = useState("");
+
   const onClick = () => {
     setCurrent(current + 1);
   };
   const getj3 = async () => {
     try {
       const response = await startQuiz("김동현");
-      console.log(response);
+      console.log(response.data);
+      setJ6(response.data);
+      setId(response.data._id);
     } catch (error) {
       console.error(error);
     }
@@ -36,7 +45,9 @@ function QuizPage() {
         <QuizStep current={current} />
         {current === 0 && <J1 current={current} setCurrent={setCurrent} />}
         {current === 1 && <J2 current={current} setCurrent={setCurrent} />}
-        {current === 2 && <J3 current={current} setCurrent={setCurrent} />}
+        {current === 2 && (
+          <J3 current={current} setCurrent={setCurrent} data={j6} id={id} />
+        )}
         {current === 3 && <J4 current={current} setCurrent={setCurrent} />}
         {current === 4 && <J5 current={current} setCurrent={setCurrent} />}
         {current === 5 && <J6 current={current} setCurrent={setCurrent} />}

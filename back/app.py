@@ -486,7 +486,7 @@ def quiz_start():
     news_lst = category.get("current_news_id_lst")
 
     quiz_create(user_id, news_lst, today)
-
+    print(123)
     quiz_lst = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3", "date": today})
 
     # return quiz_lst
@@ -501,12 +501,13 @@ def quiz_create(user_id, news_lst, date):
     result = {}
     cnt = 1
     for news in news_lst:
-        # 디테일 불러오기
+        # 뉴스 콘텐츠 불러오기
         data = send_detail_request(news)
         content_sum += data.get("return_object").get("documents")[0].get("content")
+
         # 단답형 문제 생성
         answer, question = question_generator(data.get("return_object").get("documents")[0].get("content"))
-        # 4지선다 이야기 회상형 퀴즈 생성
+        # 단답형 >>> 4지선다 이야기 회상형 퀴즈 생성
         dict1 = create_choice_quiz(user_id, data.get("return_object").get("documents")[0].get("content"), answer,
                                    question, date)
         result[str(cnt)] = dict1
@@ -514,7 +515,7 @@ def quiz_create(user_id, news_lst, date):
 
     # 비동기
     Thread(target=quiz_list, args=(content_sum, user_id, date)).start()
-
+    print(123)
     doc = {'user_id': user_id, "quiz_type": "j3", "date": date, "result": result}
     mongodb.quiz.insert_one(doc)
 
@@ -612,7 +613,6 @@ def answer_j7():
 
 
 # j7 정답 처리 및 결과 저장
-
 def quiz_answer_j7(user_id, quiz_id, answer_o, answer_x):
     quiz = mongodb.quiz.find_one({"_id": ObjectId(quiz_id), "quiz_type": "j7"})
     score = 0
