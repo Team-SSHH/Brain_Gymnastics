@@ -14,14 +14,14 @@ function J5({ current, setCurrent }: QuizStepProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100">
-      <p className="text-5xl mb-10 mt-10 font-bold">구성 행동 검사</p>
-      <div className="text-2xl mb-5">
-        <p>문제: 보여드리는 그림을 순서대로 그려주세요.</p>
-      </div>
+    <div className="flex flex-col items-center justify-center">
+      <p className="absolute text-5xl top-20 font-bold">구성 행동 검사</p>
+      <p className="text-2xl mb-5  mt-32">
+        보여드리는 그림을 순서대로 그려주세요.
+      </p>
       <img src={art} alt="핸드" className="w-1/3 mb-5" />
       <CanvasDraw
-        className="border mb-5 w-9/12 h-32 text-2xl"
+        className="border w-9/12 h-32 text-2xl mt-7"
         brushColor="black"
         brushRadius={2}
       />

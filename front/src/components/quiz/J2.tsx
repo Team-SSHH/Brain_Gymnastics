@@ -14,7 +14,7 @@ function J2({ current, setCurrent }: QuizStepProps) {
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100">
-      <p className="text-5xl mb-10 mt-10 font-bold">보스톤 이름대기 검사</p>
+      <p className="absolute text-5xl top-20 font-bold">보스톤 이름대기 검사</p>
 
       <div className="text-3xl mb-5 leading-loose ">
         지금부터 제가 몇 개의 그림을 보여 드리겠습니다.

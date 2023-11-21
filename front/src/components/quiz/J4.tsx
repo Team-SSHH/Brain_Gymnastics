@@ -86,17 +86,19 @@ function J4({ current, setCurrent }: QuizStepProps) {
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100">
-      <p className="text-5xl mb-10 mt-10 font-bold">단어목록기억 검사</p>
+      <p className="absolute text-5xl top-20 font-bold">단어목록기억 검사</p>
       <div className="text-2xl mb-5">
-        <div className="text-5xl">{j4 && j4.example[currentExIndex]}</div>
+        <div className="text-7xl font-extrabold">
+          {j4 && j4.example[currentExIndex]}
+        </div>
         {currentExIndex === 10 &&
           (answer.length < 10 ? (
             <div className="w-full h-32">
-              <p className="text-2xl mb-5">기억나는 단어를 모두 적어주세요</p>
+              <p className="text-3xl mb-5">기억나는 단어를 모두 적어주세요.</p>
               <input
                 type="text"
-                className="text-2xl border mb-5 w-full"
-                placeholder="단어를 적고 엔터를 쳐주세요"
+                className="text-2xl border mb-5 w-full h-16 rounded-xl border-none pl-2"
+                placeholder="단어를 적고 엔터를 눌러주세요."
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyDown={handleEnterPress}

@@ -13,7 +13,7 @@ function J1({ current, setCurrent }: QuizStepProps) {
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100 mr-10">
-      <p className="text-5xl mb-10 mt-10 font-bold">언어 유착성 검사</p>
+      <p className="absolute text-5xl top-20 font-bold">언어 유착성 검사</p>
       <div className="text-3xl mb-5 leading-loose ">
         지금부터 '동물'에 속하는 것들의 이름을 모두 말씀해보십시오.
         <br />

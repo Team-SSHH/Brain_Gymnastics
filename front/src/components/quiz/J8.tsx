@@ -14,7 +14,7 @@ function J8({ current, setCurrent }: QuizStepProps) {
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100">
-      <p className="text-5xl mb-10 mt-10 font-bold">구성 회상 검사</p>
+      <p className="absolute text-5xl top-20 font-bold">구성 회상 검사</p>
       <div className="text-2xl mb-5">
         <p>
           문제: 앞선 검사에서 그렸던 그림들이 기억 나시나요? 아까 그렸던

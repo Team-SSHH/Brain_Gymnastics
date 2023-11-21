@@ -78,6 +78,9 @@ function J7({ current, setCurrent }: QuizStepProps) {
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100">
+      <div className="absolute text-5xl top-20 font-bold">
+        단어목록재인 검사
+      </div>
       <div
         style={{
           display: "flex",

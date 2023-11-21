@@ -35,6 +35,9 @@ function J3({ current, setCurrent, data, id }: QuizStepProps) {
 
   return (
     <div className="mt-32 text-xl leading-loose mr-10">
+      <div className="absolute text-5xl top-20 font-bold text-center">
+        MMSE-KC
+      </div>
       {Object.entries(data.result).map(([key, value]) => {
         const quizValue = value as QuizValue;
         return (
@@ -60,7 +63,7 @@ function J3({ current, setCurrent, data, id }: QuizStepProps) {
         );
       })}
       <Button
-        className="right-16 font-bold text-xl fixed w-44 h-14  bg-secondary hover:border-none hover:text-3xl hover:text-black"
+        className="bottom-5 right-16 font-bold text-xl fixed w-44 h-14  bg-secondary hover:border-none hover:text-3xl hover:text-black"
         type="primary"
         onClick={postj3}
       >
