@@ -519,7 +519,7 @@ def quiz_create(user_id, news_lst, date):
     mongodb.quiz.insert_one(doc)
 
 # j6 불러오기 GET
-@app.route("/quiz/start/j6", methods=['GET'])
+@app.route("/quiz/start/j6", methods=['POST'])
 def quiz_get_j6():
     user_id = request.json.get('user_id')
     date = request.json.get('date')
@@ -530,7 +530,7 @@ def quiz_get_j6():
     return jsonify(result), 200
 
 # j6 풀기 POST
-@app.route("/quiz/start/j6", methods=['POST'])
+@app.route("/quiz/answer/j6", methods=['POST'])
 def quiz_solve_j6():
     body = request.json
     user_id = body.get("user_id")
@@ -598,7 +598,7 @@ def quiz_start_j7():
 
 
 # j7 정답 제출
-@app.route("/quiz/asnwer/j7", methods=['POST'])
+@app.route("/quiz/answer/j7", methods=['POST'])
 def answer_j7():
     user_id = request.json.get('user_id')
     quiz_id = request.json.get("quiz_id")

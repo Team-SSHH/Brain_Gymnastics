@@ -38,7 +38,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/board" element={<QuizPage />} />
+          <Route path="/quiz" element={<QuizPage />} />
         </Routes>
       </div>
     </BrowserRouter>
