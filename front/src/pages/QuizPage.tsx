@@ -12,6 +12,7 @@ import J9 from "../components/quiz/J9";
 import { startQuiz } from "../utiles/news";
 import { Button } from "antd";
 import { position } from "stylis";
+import { useNavigate } from "react-router-dom";
 
 interface j3 {
   result: {};
@@ -21,8 +22,11 @@ function QuizPage() {
   const [current, setCurrent] = useState(0);
   const [j3, setJ3] = useState<j3>();
   const [id, setId] = useState("");
-
+  const navigate = useNavigate();
   const onClick = () => {
+    if (current === 8) {
+      navigate("/profile");
+    }
     setCurrent(current + 1);
   };
   const getj3 = async () => {
@@ -60,7 +64,7 @@ function QuizPage() {
         className="font-bold text-xl fixed w-44 h-14 bottom-4 left-1/3 bg-secondary hover:border-none hover:text-3xl hover:text-black"
         type="primary"
       >
-        다음
+        {current === 8 ? "종료" : "다음"}
       </Button>
     </div>
   );

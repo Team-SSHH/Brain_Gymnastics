@@ -24,11 +24,7 @@ function J9({ current, setCurrent }: QuizStepProps) {
         <br />
         이와 같은 식으로 순서대로 끝에 도달할 때까지 선을 그어 보십시오.
       </div>
-      <img src={path} alt="길만들기" className="w-2/5 mb-5" />
-      <textarea
-        className="border mb-5 p-3 w-9/12 h-32 text-2xl"
-        placeholder="동물의 이름을 입력하세요."
-      />
+      <img src={path} alt="길만들기" className="w-3/5" />
     </div>
   );
 }

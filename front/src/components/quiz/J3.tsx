@@ -50,7 +50,7 @@ function J3({ current, setCurrent, data, id }: QuizStepProps) {
             >
               {Object.entries(quizValue.example).map(([key, value]) => (
                 <Radio value={key} key={key} className="font-default text-2xl">
-                  &nbsp;&nbsp;{`${key} : ${value}`}
+                  &nbsp;&nbsp;{`${value}`}
                 </Radio>
               ))}
             </Radio.Group>
