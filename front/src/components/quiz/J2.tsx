@@ -15,7 +15,7 @@ function J2({ current, setCurrent }: QuizStepProps) {
     <div>
       <div>
         <p>보스톤 이름대기 검사</p>
-        <Button onClick={onClick}></Button>
+        {/* <Button onClick={onClick}></Button> */}
       </div>
     </div>
   );

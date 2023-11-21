@@ -682,6 +682,6 @@ def my_score():
 
 
 
-# 서버 올릴 때 설정
-if __name__=='__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+# # 서버 올릴 때 설정
+# if __name__=='__main__':
+#     app.run(host='0.0.0.0', port=5000, debug=True)
