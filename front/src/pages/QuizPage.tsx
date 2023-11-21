@@ -60,7 +60,7 @@ function QuizPage() {
         className="font-bold text-xl fixed w-44 h-14 bottom-4 left-1/3 bg-secondary hover:border-none hover:text-3xl hover:text-black"
         type="primary"
       >
-        다음
+        {current === 8 ? "종료" : "다음"}
       </Button>
     </div>
   );
