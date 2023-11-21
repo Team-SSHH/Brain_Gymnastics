@@ -15,7 +15,7 @@ function J1({ current, setCurrent }: QuizStepProps) {
     <div>
       <div>
         <p>언어유창성 검사</p>
-        <Button onClick={onClick}></Button>
+        {/* <Button onClick={onClick}></Button> */}
       </div>
     </div>
   );

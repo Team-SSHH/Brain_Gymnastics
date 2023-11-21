@@ -15,7 +15,7 @@ function J3({ current, setCurrent }: QuizStepProps) {
     <div>
       <div>
         <p>MMSE-KC</p>
-        <Button onClick={onClick}></Button>
+        {/* <Button onClick={onClick}></Button> */}
       </div>
     </div>
   );

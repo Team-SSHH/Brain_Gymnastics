@@ -8,14 +8,15 @@ def question_generator(context):
     # 토크나이저 불러오기
     tokenizer = SentencePieceBPETokenizer.from_file(vocab_filename="tokenizer/vocab.json", merges_filename="tokenizer/merges.txt", add_prefix_space=False)
     # 모델 불러오기
-    model = torch.load('brain.pth')
+    # model = torch.load('brain.pth')
 
     # # 모델을 불러옵니다.
     # model = GPT2LMHeadModel.from_pretrained("csi9876/brain", use_auth_token="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")
+    model = GPT2LMHeadModel.from_pretrained("taeminlee/kogpt2")
     # # 미리 학습된 가중치를 불러옵니다.
-    # weights = torch.load('QG_kogpt2.pth', map_location=torch.device('cpu'))
+    weights = torch.load('QG_kogpt2.pth', map_location=torch.device('cpu'))
     # # 가중치를 모델에 적용합니다.
-    # model.load_state_dict(weights, strict=False)
+    model.load_state_dict(weights, strict=False)
     # torch.save(model, 'brain.pth')
 
     encoded_context = tokenizer.encode(context)

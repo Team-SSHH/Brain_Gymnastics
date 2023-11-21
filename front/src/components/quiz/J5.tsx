@@ -15,7 +15,7 @@ function J5({ current, setCurrent }: QuizStepProps) {
     <div>
       <div>
         <p>구성행동 검사</p>
-        <Button onClick={onClick}></Button>
+        {/* <Button onClick={onClick}></Button> */}
       </div>
     </div>
   );
