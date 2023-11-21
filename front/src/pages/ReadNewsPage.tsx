@@ -11,15 +11,15 @@ const ReadNewsPage = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-20 mx-20 pt-28 justify-items-center">
-        <CategoryBtn name="맞춤" />
-        <CategoryBtn name="정치" />
-        <CategoryBtn name="경제" />
-        <CategoryBtn name="사회" />
-        <CategoryBtn name="문화" />
-        <CategoryBtn name="국제" />
-        <CategoryBtn name="지역" />
-        <CategoryBtn name="스포츠" />
-        <CategoryBtn name="IT_과학" />
+        <CategoryBtn name="맞춤" category="read" />
+        <CategoryBtn name="정치" category="read" />
+        <CategoryBtn name="경제" category="read" />
+        <CategoryBtn name="사회" category="read" />
+        <CategoryBtn name="문화" category="read" />
+        <CategoryBtn name="국제" category="read" />
+        <CategoryBtn name="지역" category="read" />
+        <CategoryBtn name="스포츠" category="read" />
+        <CategoryBtn name="IT_과학" category="read" />
       </div>
     </div>
   );

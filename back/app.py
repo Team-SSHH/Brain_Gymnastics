@@ -105,7 +105,7 @@ def detail():
     }), 200
 
 def createQuiz4(user_id, content, date):
-    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3"})
+    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3", "date": date})
     if quiz is None:
         result = {}
         # 단답형 문제 생성
@@ -128,7 +128,7 @@ def createQuiz4(user_id, content, date):
         result['2'] = result['3']
         result['3'] = dict1
 
-        mongodb.quiz.update_one({"user_id": user_id, "quiz_type": "j3"}, {"$set": {"result": result}})
+        mongodb.quiz.update_one({"user_id": user_id, "quiz_type": "j3", "date": date}, {"$set": {"result": result}})
     else:
         result = quiz.get("result")
         # 단답형 문제 생성
@@ -138,7 +138,7 @@ def createQuiz4(user_id, content, date):
                                    question, date)
         result[str(len(quiz.get("result"))+1)] = dict1
 
-        mongodb.quiz.update_one({"user_id": user_id, "quiz_type": "j3"}, {"$set": {"result": result}})
+        mongodb.quiz.update_one({"user_id": user_id, "quiz_type": "j3", "date": date}, {"$set": {"result": result}})
 
 # 본문에서 키워드 추출
 def extract_keywords(content):
