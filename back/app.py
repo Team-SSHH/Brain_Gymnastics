@@ -656,8 +656,7 @@ def score_save(user_id, date):
         "j9":172.96
     }
     print(dict1)
-    mongodb.score.update_one({'user_id': user_id}, {"$set": {"date": {date: dict1}}}, upsert=True)
-
+    mongodb.score.update_one({'user_id': user_id}, {"$set": {"date." + date: dict1}}, upsert=True)
 
 
 
