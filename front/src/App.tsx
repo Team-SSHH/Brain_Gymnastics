@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 import logo from "./assets/logo.png";
+import MainPage from "./pages/MainPage";
+import ProfilePage from "./pages/ProfilePage";
+import QuizPage from "./pages/QuizPage";
 
 function App() {
   useEffect(() => {
@@ -32,11 +35,11 @@ function App() {
         <header className="App-header">
           <img src={logo} alt="두뇌체조로고" className="w-32" />
         </header>
-        {/* <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/board" element={<Board />} />
-        </Routes> */}
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/board" element={<QuizPage />} />
+        </Routes>
         <div>여기여기</div>
       </div>
     </BrowserRouter>
