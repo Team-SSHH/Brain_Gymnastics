@@ -199,8 +199,9 @@ def show_news_and_category_save():
     content = data["return_object"]["documents"][0]["content"]
 
     today = date.today().strftime("%Y-%m-%d")
-    # 비동기
-    Thread(target=createQuiz4, args=(user_id, content, today)).start()
+
+    # # 비동기
+    # Thread(target=createQuiz4, args=(user_id, content, today)).start()
 
     keywords = extract_keywords(content)
     # print(keywords)
@@ -216,19 +217,16 @@ def category_cnt(user_id, news_id, category_list):
         json_data = json.load(json_file)
 
     categories = json_data.get('category', [])
+    mongodb.categories.update_one(
+        {'user_id': user_id, 'current_news_id_lst': {'$nin': [news_id]}},
+        {'$push': {'current_news_id_lst': {'$each': [news_id], '$slice': -3}}},
+    )
     for category in categories:
         if category in category_list:
             # 먼저 news_id를 추가
             mongodb.categories.update_one(
                 {'user_id': user_id},
-                {'$addToSet': {'current_news_id_lst': news_id}},
-                upsert=True
-            )
-
-            # 그런 다음 배열의 크기를 조절
-            mongodb.categories.update_one(
-                {'user_id': user_id},
-                {'$push': {'current_news_id_lst': {'$each': [], '$slice': -3}}, '$inc': {f'category.{category}': 1}},
+                {'$inc': {f'category.{category}': 1}},
                 upsert=True
             )
 
