@@ -10,7 +10,7 @@ const ReadNewsPage = () => {
         <TitleBtn name="뉴스 주제 선택" />
       </div>
 
-      <div className="grid grid-cols-3 gap-24 mx-20 pt-28 justify-items-center">
+      <div className="grid grid-cols-3 gap-20 mx-20 pt-28 justify-items-center">
         <CategoryBtn name="맞춤" />
         <CategoryBtn name="정치" />
         <CategoryBtn name="경제" />
