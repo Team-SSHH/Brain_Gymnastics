@@ -41,7 +41,7 @@ function QuizPage() {
   }, []);
   return (
     <div>
-      <div>
+      <div className="grid grid-cols-2">
         <QuizStep current={current} />
         {current === 0 && <J1 current={current} setCurrent={setCurrent} />}
         {current === 1 && <J2 current={current} setCurrent={setCurrent} />}
@@ -57,14 +57,11 @@ function QuizPage() {
       </div>
       <Button
         onClick={onClick}
-        style={{
-          position: "fixed",
-          width: "200px",
-          height: "50px",
-          right: "100px",
-          bottom: "100px",
-        }}
-      ></Button>
+        className="font-bold text-xl fixed w-44 h-14 bottom-4 left-1/3 bg-secondary hover:border-none hover:text-3xl hover:text-black"
+        type="primary"
+      >
+        다음
+      </Button>
     </div>
   );
 }

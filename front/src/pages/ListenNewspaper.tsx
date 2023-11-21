@@ -48,7 +48,7 @@ const ListenNewspaper = () => {
               <img
                 src={ear}
                 alt="귀"
-                className="w-10 h-10 absolute top-1/5 right-1/2"
+                className="w-24 h-24 absolute top-5 right-5 cursor-pointer"
                 onClick={() => speak(data.title, data.content)}
               />
               <div className="font-extrabold text-5xl text-center pt-10">
