@@ -32,7 +32,7 @@ const averageData: Data[] = [
 const Graph: React.FC<GraphProps> = ({ userData }) => {
   return (
     <LineChart
-      width={500}
+      width={800}
       height={300}
       data={averageData}
       margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
@@ -47,7 +47,7 @@ const Graph: React.FC<GraphProps> = ({ userData }) => {
       />
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
       <XAxis dataKey="name" />
-      <YAxis />
+      <YAxis domain={[0, 30]} allowDataOverflow={true} />
       <Tooltip />
     </LineChart>
   );
