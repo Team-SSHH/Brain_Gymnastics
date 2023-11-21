@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "antd";
+import { Button, Radio } from "antd";
 import { answerJ3 } from "../../utiles/news";
 
 interface QuizStepProps {
@@ -7,6 +7,10 @@ interface QuizStepProps {
   setCurrent: React.Dispatch<React.SetStateAction<number>>;
   data: any;
   id: string;
+}
+interface QuizValue {
+  quiz_question: string;
+  example: { [key: string]: string };
 }
 
 function J3({ current, setCurrent, data, id }: QuizStepProps) {
@@ -16,7 +20,7 @@ function J3({ current, setCurrent, data, id }: QuizStepProps) {
     setCurrent(current + 1);
   };
 
-  const postj4 = async () => {
+  const postj3 = async () => {
     try {
       const response = await answerJ3("김동현", id, answer);
       console.log(response.data);
@@ -25,19 +29,34 @@ function J3({ current, setCurrent, data, id }: QuizStepProps) {
     }
   };
 
+  const handleRadioChange = (question: string, value: string) => {
+    setAnswer(new Map(answer.set(question, value)));
+  };
+
   return (
     <div>
       <div>
         <p>MMSE-KC</p>
-        {data.result.map((que: any) => (
-          <div>
-            <p>{que.quiz_question}</p>
-            {Object.entries(que.example).map(([key, value]) => (
-              <span key={key}>{`${key} : ${value}`}</span>
-            ))}
-          </div>
-        ))}
-        {/* <Button onClick={onClick}></Button> */}
+        {Object.entries(data.result).map(([key, value]) => {
+          const quizValue = value as QuizValue;
+          return (
+            <div key={key}>
+              <p>{`${key}번 ${quizValue.quiz_question}`}</p>
+              <Radio.Group
+                onChange={(e) =>
+                  handleRadioChange(quizValue.quiz_question, e.target.value)
+                }
+              >
+                {Object.entries(quizValue.example).map(([key, value]) => (
+                  <Radio value={key} key={key}>
+                    &nbsp;&nbsp;{`${key} : ${value}`}
+                  </Radio>
+                ))}
+              </Radio.Group>
+            </div>
+          );
+        })}
+        <Button onClick={postj3}>제출</Button>
       </div>
     </div>
   );

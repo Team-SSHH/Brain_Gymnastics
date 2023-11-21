@@ -19,7 +19,7 @@ interface j3 {
 
 function QuizPage() {
   const [current, setCurrent] = useState(0);
-  const [j6, setJ6] = useState<j3>();
+  const [j3, setJ3] = useState<j3>();
   const [id, setId] = useState("");
 
   const onClick = () => {
@@ -29,7 +29,7 @@ function QuizPage() {
     try {
       const response = await startQuiz("김동현");
       console.log(response.data);
-      setJ6(response.data);
+      setJ3(response.data);
       setId(response.data._id);
     } catch (error) {
       console.error(error);
@@ -46,7 +46,7 @@ function QuizPage() {
         {current === 0 && <J1 current={current} setCurrent={setCurrent} />}
         {current === 1 && <J2 current={current} setCurrent={setCurrent} />}
         {current === 2 && (
-          <J3 current={current} setCurrent={setCurrent} data={j6} id={id} />
+          <J3 current={current} setCurrent={setCurrent} data={j3} id={id} />
         )}
         {current === 3 && <J4 current={current} setCurrent={setCurrent} />}
         {current === 4 && <J5 current={current} setCurrent={setCurrent} />}
