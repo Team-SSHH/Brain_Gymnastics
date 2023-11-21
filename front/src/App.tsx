@@ -40,7 +40,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/quiz" element={<QuizPage />} />
         </Routes>
-        <div>여기여기</div>
+        {/* <div>여기여기</div> */}
       </div>
     </BrowserRouter>
   );
