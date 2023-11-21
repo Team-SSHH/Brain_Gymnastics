@@ -6,18 +6,22 @@ import logo from "./assets/logo.png";
 import MainPage from "./pages/MainPage";
 import ProfilePage from "./pages/ProfilePage";
 import QuizPage from "./pages/QuizPage";
+import ReadNewsPage from "./pages/ReadNewsPage";
+import ReadNewspaper from "./pages/ReadNewspaper";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="bg-primary h-screen font-default">
-        <header className="App-header">
+      <div className="bg-primary tracking-wider h-screen font-default pt-5">
+        {/* <header className="App-header">
           <img src={logo} alt="두뇌체조로고" className="w-32 no-drag" />
-        </header>
+        </header> */}
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/readNews" element={<ReadNewsPage />} />
+          <Route path="/ReadNewspaper/:id" element={<ReadNewspaper />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -3,8 +3,18 @@ import { api } from "./api";
 export const getCategoryNews = (category: Array<string>, page: number) =>
   api.post(`/news/category`, { category, page });
 
-export const saveCategory = (name_id: string, category: Array<string>) =>
-  api.post(`/category/save`, { name_id, category });
+export const saveCategory = async (
+  news_id: string,
+  category: Array<string>,
+  user_id: string
+) => {
+  const response = await api.post(`/category/save`, {
+    news_id,
+    category,
+    user_id,
+  });
+  return response;
+};
 
 export const detail = (news_id: string) => api.post(`/detail`, { news_id });
 

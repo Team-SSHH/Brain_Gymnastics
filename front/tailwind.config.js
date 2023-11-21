@@ -6,6 +6,8 @@ module.exports = {
       colors: {
         primary: "#96A57B",
         secondary: "#C8CEAA",
+        red: "#FF3B3B",
+        gray: "#D4D4D4",
       },
       fontFamily: {
         default: ["Pretendard-Regular"],

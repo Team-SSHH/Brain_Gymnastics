@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import main1 from "../assets/main1.png";
 import main2 from "../assets/main2.png";
 import main3 from "../assets/main3.png";
@@ -17,19 +18,25 @@ function MainPage() {
           </p>
         </div>
 
-        <div className="w-1/3 flex flex-col items-center justify-between h-2/3 hover:scale-110">
+        <Link
+          to="/readNews"
+          className="w-1/3 flex flex-col items-center justify-between h-2/3 hover:scale-110"
+        >
           <img src={main2} alt="뉴스 보기" className="w-3/5 no-drag" />
           <p className="text-4xl font-bold text-center pt-8">
             오늘의 뉴스 보기
           </p>
-        </div>
+        </Link>
 
-        <div className="w-1/3 flex flex-col items-center justify-between h-2/3 hover:scale-110">
+        <Link
+          to="/quiz"
+          className="w-1/3 flex flex-col items-center justify-between h-2/3 hover:scale-110"
+        >
           <img src={main3} alt="문제 풀기" className="w-3/5 no-drag pt-20" />
           <p className="text-4xl font-bold text-center pt-8">
             오늘의 문제 풀기
           </p>
-        </div>
+        </Link>
       </div>
     </div>
   );
