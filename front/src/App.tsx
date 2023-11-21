@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 import axios from "axios";
 import "./App.css";
@@ -26,12 +27,19 @@ function App() {
   }, []);
 
   return (
-    <div className="App bg-primary">
-      <header className="App-header">
-        <img src={logo} alt="두뇌체조로고" className="w-32" />
-      </header>
-      <div>여기여기</div>
-    </div>
+    <BrowserRouter>
+      <div className="App bg-primary">
+        <header className="App-header">
+          <img src={logo} alt="두뇌체조로고" className="w-32" />
+        </header>
+        {/* <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/board" element={<Board />} />
+        </Routes> */}
+        <div>여기여기</div>
+      </div>
+    </BrowserRouter>
   );
 }
 
