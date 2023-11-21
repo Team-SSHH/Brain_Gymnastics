@@ -7,9 +7,10 @@ import { LuNewspaper } from "react-icons/lu";
 
 interface Props {
   name: string;
+  category: string;
 }
 
-const CategoryBtn: React.FC<Props> = ({ name }) => {
+const CategoryBtn: React.FC<Props> = ({ name, category }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [news, setNews] = useState<NewsType[]>([]);
   const navigate = useNavigate();
@@ -61,9 +62,14 @@ const CategoryBtn: React.FC<Props> = ({ name }) => {
             <div
               key={nowNews.news_id}
               onClick={() =>
-                navigate(`/readNewspaper/${nowNews.news_id}`, {
-                  state: nowNews,
-                })
+                navigate(
+                  `/${category === "read" ? "read" : "listen"}Newspaper/${
+                    nowNews.news_id
+                  }`,
+                  {
+                    state: nowNews,
+                  }
+                )
               }
             >
               <p className="text-2xl font-bold mt-8">
