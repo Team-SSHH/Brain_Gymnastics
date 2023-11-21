@@ -31,16 +31,15 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="App bg-primary">
+      <div className="bg-primary h-screen font-default">
         <header className="App-header">
-          <img src={logo} alt="두뇌체조로고" className="w-32" />
+          <img src={logo} alt="두뇌체조로고" className="w-32 no-drag" />
         </header>
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/board" element={<QuizPage />} />
         </Routes>
-        <div>여기여기</div>
       </div>
     </BrowserRouter>
   );
