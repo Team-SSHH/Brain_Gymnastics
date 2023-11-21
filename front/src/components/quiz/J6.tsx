@@ -57,23 +57,25 @@ function J6({ current, setCurrent }: QuizStepProps) {
   const onClick = () => {
     setCurrent(current + 1);
   };
+  console.log(inputValue);
+  console.log(answer);
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100">
-      <p className="text-5xl top-20 font-bold">단어목록회상 검사</p>
+      <p className="absolute text-5xl top-20 font-bold">단어목록회상 검사</p>
       <div className="text-3xl mb-5 leading-loose ">
         <p>
-          몇 분 전에 제가 단어가 인쇄되어 잇는 10개의 카드를 보여 드리면서,{" "}
-          <br />그 단어들을 읽고 외우도록 했었습니다. <br />
+          몇 분 전에 10개의 단어를 보여 드리면서, <br />그 단어들을 외우도록
+          했었습니다. <br />
           이제 그 10개의 단어 중 가 능한 많은 수의 단어를 기억해 보시는 겁니다.
           <br />
-          준비되었습니까? 자, 그 10개의 단어 중 기억나는 단어를 모두 말씀해
-          보세요.
+          준비되었습니까? 자, 그 10개의 단어 중 기억나는 단어를 적어 보세요.
         </p>
         <div>
           <input
             type="text"
             placeholder="단어를 적고 엔터를 쳐주세요"
+            className="text-2xl border mb-5 w-full"
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleEnterPress}
@@ -81,7 +83,8 @@ function J6({ current, setCurrent }: QuizStepProps) {
         </div>
       </div>
       <Button
-        className="font-bold text-xl"
+        className="right-16 font-bold text-xl fixed w-44 h-14  bg-secondary hover:border-none hover:text-3xl hover:text-black"
+        type="primary"
         style={{
           position: "fixed",
           right: "3%",
