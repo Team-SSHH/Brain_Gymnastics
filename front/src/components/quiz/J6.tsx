@@ -18,18 +18,6 @@ function J6({ current, setCurrent }: QuizStepProps) {
   const [answer, setAnswer] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
 
-  useEffect(() => {
-    if (j6 && currentExIndex < j6.example.length) {
-      const timer = setTimeout(() => {
-        setCurrentExIndex((prevIndex) => prevIndex + 1);
-      }, 2000);
-      return () => clearTimeout(timer);
-    } else {
-      setIndex(1);
-      console.log(index);
-    }
-  }, [currentExIndex, j6]);
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
@@ -71,27 +59,40 @@ function J6({ current, setCurrent }: QuizStepProps) {
   };
 
   return (
-    <div>
-      <div>
-        <p>단어목록회상 검사</p>
-        <div>{j6 && j6.example[currentExIndex]}</div>
-        {currentExIndex === 10 &&
-          (answer.length < 10 ? (
-            <div>
-              <p>기억나는 단어를 모두 적어주세요</p>
-              <input
-                type="text"
-                placeholder="단어를 적고 엔터를 쳐주세요"
-                value={inputValue}
-                onChange={handleInputChange}
-                onKeyDown={handleEnterPress}
-              />
-            </div>
-          ) : (
-            <Button onClick={postj6}>정답 제출</Button>
-          ))}
-        {/* <Button onClick={onClick}></Button> */}
+    <div className="flex flex-col items-center justify-center bg-gray-100">
+      <p className="text-5xl top-20 font-bold">단어목록회상 검사</p>
+      <div className="text-3xl mb-5 leading-loose ">
+        <p>
+          몇 분 전에 제가 단어가 인쇄되어 잇는 10개의 카드를 보여 드리면서,{" "}
+          <br />그 단어들을 읽고 외우도록 했었습니다. <br />
+          이제 그 10개의 단어 중 가 능한 많은 수의 단어를 기억해 보시는 겁니다.
+          <br />
+          준비되었습니까? 자, 그 10개의 단어 중 기억나는 단어를 모두 말씀해
+          보세요.
+        </p>
+        <div>
+          <input
+            type="text"
+            placeholder="단어를 적고 엔터를 쳐주세요"
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleEnterPress}
+          />
+        </div>
       </div>
+      <Button
+        className="font-bold text-xl"
+        style={{
+          position: "fixed",
+          right: "3%",
+          bottom: "3%",
+          width: "150px",
+          height: "60px",
+        }}
+        onClick={postj6}
+      >
+        정답 제출
+      </Button>
     </div>
   );
 }
