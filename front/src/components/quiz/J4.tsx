@@ -85,16 +85,17 @@ function J4({ current, setCurrent }: QuizStepProps) {
   };
 
   return (
-    <div>
-      <div>
-        <p>단어목록기억 검사</p>
-        <div>{j4 && j4.example[currentExIndex]}</div>
+    <div className="flex flex-col items-center justify-center bg-gray-100">
+      <p className="text-5xl mb-10 mt-10 font-bold">단어목록기억 검사</p>
+      <div className="text-2xl mb-5">
+        <div className="text-5xl">{j4 && j4.example[currentExIndex]}</div>
         {currentExIndex === 10 &&
           (answer.length < 10 ? (
-            <div>
-              <p>기억나는 단어를 모두 적어주세요</p>
+            <div className="w-full h-32">
+              <p className="text-2xl mb-5">기억나는 단어를 모두 적어주세요</p>
               <input
                 type="text"
+                className="text-2xl border mb-5 w-full"
                 placeholder="단어를 적고 엔터를 쳐주세요"
                 value={inputValue}
                 onChange={handleInputChange}
@@ -102,9 +103,14 @@ function J4({ current, setCurrent }: QuizStepProps) {
               />
             </div>
           ) : (
-            <Button onClick={postj4}>{com === 0 ? "정답 제출" : "완료"}</Button>
+            <Button
+              className="right-16 font-bold text-xl fixed w-44 h-14  bg-secondary hover:border-none hover:text-3xl hover:text-black"
+              type="primary"
+              onClick={postj4}
+            >
+              {com === 0 ? "정답 제출" : "완료"}
+            </Button>
           ))}
-        {/* <Button onClick={onClick}></Button> */}
       </div>
     </div>
   );
