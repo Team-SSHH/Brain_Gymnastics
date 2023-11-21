@@ -53,4 +53,8 @@ export const startJ7 = (user_id : string, date : string) =>
 
 // 퀴즈 7 정답 제출
 export const answerJ7 = (user_id : string, quiz_id : string, answer_o : Array<string>, answer_x : Array<string>) =>
-  api.post(`/quiz/answer/j7`)
+  api.post(`/quiz/answer/j7`, {user_id, quiz_id, answer_o, answer_x})
+
+// 내 점수 보기
+export const myScore = (user_id : string) =>
+  api.post(`/quiz/myscore`, {user_id})
