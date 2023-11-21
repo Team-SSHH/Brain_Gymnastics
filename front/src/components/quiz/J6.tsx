@@ -74,7 +74,7 @@ function J6({ current, setCurrent }: QuizStepProps) {
           <input
             type="text"
             placeholder="단어를 적고 엔터를 쳐주세요"
-            className="text-2xl border mb-5 w-full"
+            className="text-2xl border mb-5 w-full h-16 rounded-xl border-none pl-2"
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleEnterPress}

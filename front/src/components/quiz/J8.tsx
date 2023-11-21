@@ -17,8 +17,9 @@ function J8({ current, setCurrent }: QuizStepProps) {
       <p className="absolute text-5xl top-20 font-bold">구성 회상 검사</p>
       <div className="text-2xl mb-5">
         <p>
-          문제: 앞선 검사에서 그렸던 그림들이 기억 나시나요? 아까 그렸던
-          그림들을 다시 한번 그려주세요.
+          앞선 검사에서 그렸던 그림들이 기억 나시나요?
+          <br />
+          아까 그렸던 그림들을 다시 한번 그려주세요.
         </p>
       </div>
 

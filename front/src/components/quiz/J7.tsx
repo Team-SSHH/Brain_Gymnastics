@@ -33,9 +33,9 @@ function J7({ current, setCurrent }: QuizStepProps) {
   };
 
   const postJ7 = async () => {
-    if (correctAnswers.length + incorrectAnswers.length === 20) {
-      return;
-    }
+    // if (correctAnswers.length + incorrectAnswers.length === 20) {
+    //   return;
+    // }
     try {
       const response = await answerJ7(
         "김동현",
