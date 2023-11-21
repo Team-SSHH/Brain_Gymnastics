@@ -210,6 +210,7 @@ def recommend_news():
     # keywords 배열의 중요한 부분 5개 선택
     important_keywords = select_important_keywords(keywords)
     query = "" if not important_keywords else " OR ".join(important_keywords)
+    print(query)
 
     data = {
         "access_key": "9f7da60c-c993-459a-88c7-9a4230797087",
