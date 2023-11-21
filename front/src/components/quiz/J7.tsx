@@ -87,12 +87,6 @@ function J7({ current, setCurrent }: QuizStepProps) {
         }}
       >
         <div style={{ width: "90%", height: "60%" }}>
-          <p
-            style={{ textAlign: "center" }}
-            className="text-5xl mb-10 mt-10 font-bold"
-          >
-            단어목록재인 검사
-          </p>
           <div
             style={{
               display: "flex",
@@ -105,6 +99,7 @@ function J7({ current, setCurrent }: QuizStepProps) {
                 return (
                   <div key={index} style={{ width: "23%", marginBottom: 20 }}>
                     <div
+                      className="font-bold text-xl font-default"
                       style={{
                         backgroundColor: "white",
                         borderRadius: "15px",
@@ -129,24 +124,29 @@ function J7({ current, setCurrent }: QuizStepProps) {
                         value={selectedItems[ex]}
                         onChange={(event) => handleRadioChange(ex, event)}
                       >
-                        <Radio value="예">예</Radio>
-                        <Radio value="아니오">아니오</Radio>
+                        <Radio
+                          className="font-bold text-lg font-default hover:text-red hover:shadow-red"
+                          value="예"
+                        >
+                          예
+                        </Radio>
+                        <Radio
+                          className="font-bold text-lg font-default hover:text-blue-600"
+                          value="아니오"
+                        >
+                          아니오
+                        </Radio>
                       </Radio.Group>
                     </div>
                   </div>
                 );
               })}
           </div>
+
           <Button
             onClick={postJ7}
-            className="font-bold text-xl"
-            style={{
-              position: "fixed",
-              right: "3%",
-              bottom: "3%",
-              width: "150px",
-              height: "60px",
-            }}
+            className="font-bold text-xl right-5 bottom-5 fixed w-44 h-14 bg-secondary hover:border-none hover:text-3xl hover:text-black"
+            type="primary"
           >
             정답 제출
           </Button>

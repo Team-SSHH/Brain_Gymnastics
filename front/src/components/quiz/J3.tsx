@@ -54,6 +54,8 @@ function J3({ current, setCurrent, data, id }: QuizStepProps) {
                 </Radio>
               ))}
             </Radio.Group>
+            <br />
+            <br />
           </div>
         );
       })}
