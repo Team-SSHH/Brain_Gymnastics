@@ -30,25 +30,56 @@ const averageData: Data[] = [
 ];
 
 const Graph: React.FC<GraphProps> = ({ userData }) => {
+  const formatXAxis = (data: string) => {
+    return `${data}검사`;
+  };
+  const formatYAxis = (score: number) => {
+    if (score === 0) {
+      return "";
+    }
+    return `${score}점`;
+  };
+
   return (
     <LineChart
-      width={800}
+      width={1000}
       height={300}
       data={averageData}
       margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
     >
-      <Line type="monotone" dataKey="value" stroke="#8884d8" name="평균점수" />
       <Line
         type="monotone"
         dataKey="value"
-        stroke="#82ca9d"
+        stroke="#ff0000"
+        fill="#ff0000"
+        strokeWidth={5}
+        name="평균점수"
+      />
+      <Line
+        type="monotone"
+        dataKey="value"
+        stroke="#0b00e1"
+        fill="#0b00e1"
+        strokeWidth={5}
         name="나의점수"
         data={userData}
+        className="text-lg"
       />
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-      <XAxis dataKey="name" />
-      <YAxis domain={[0, 30]} allowDataOverflow={true} />
-      <Tooltip />
+      <XAxis
+        dataKey="name"
+        stroke="#fffff"
+        tickFormatter={formatXAxis}
+        className="text-xl font-bold"
+      />
+      <YAxis
+        domain={[0, 30]}
+        allowDataOverflow={true}
+        stroke="#fffff"
+        tickFormatter={formatYAxis}
+        className="text-xl font-bold"
+      />
+      <Tooltip contentStyle={{ fontSize: "28px" }} />
     </LineChart>
   );
 };

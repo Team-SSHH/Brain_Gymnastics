@@ -66,11 +66,11 @@ const CategoryBtn: React.FC<Props> = ({ name }) => {
                 })
               }
             >
-              <p className="text-2xl font-bold mt-8">
+              <p className="flex text-2xl font-bold mt-8">
                 <span className="text-primary mr-2 text-3xls font-extrabold">
                   {index + 1}
                 </span>
-                <span className="hover:text-red cursor-pointer">
+                <span className="hover:text-red cursor-pointer ml-4">
                   {nowNews.title}
                 </span>
               </p>

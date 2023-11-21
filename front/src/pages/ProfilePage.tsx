@@ -10,6 +10,8 @@ import {
 } from "recharts";
 
 import Graph from "../components/Graph";
+import BackBtn from "../components/ui/backBtn";
+import TitleBtn from "../components/ui/titleBtn";
 
 interface Score {
   date: string;
@@ -68,36 +70,83 @@ function ProfilePage() {
     }
   }, [selectedDate, allDate]);
 
+  const formatXAxis = (date: string) => {
+    return `${date.slice(5, 7)}월 ${date.slice(8, 11)}일`;
+  };
+  const formatYAxis = (score: number) => {
+    if (score === 0) {
+      return "";
+    }
+    return `${score}점`;
+  };
+
   return (
     <div>
-      <div>프로필 페이지입니다. 날짜별 검사 종합지수가 보여요</div>
-      {/* 평균 비교하는 차트 입니다. */}
-      <LineChart
-        width={800}
-        height={300}
-        data={userData}
-        onClick={handleXAxisClick}
-      >
-        <Line type="monotone" dataKey="sum" stroke="#0b00e1" name="종합지수" />
+      <div className="flex items-center">
+        <BackBtn />
+        <TitleBtn name="날짜별 검사 종합지수" />
+      </div>
+      <p className="text-center text-2xl">
+        날짜를 클릭하면 세부 점수를 알 수 있어요!
+        <span className="bg-[#0b00e1] text-white ml-5 px-1 rounded-full">
+          나
+        </span>
+        <span className="bg-[#ff0000] text-white ml-5 px-1 rounded-full">
+          평균
+        </span>
+      </p>
+      <div className="mt-12 flex flex-col items-center justify-center h-full ">
+        {/* 평균 비교하는 차트 입니다. */}
+        <LineChart
+          width={1000}
+          height={300}
+          data={userData}
+          onClick={handleXAxisClick}
+        >
+          <Line
+            type="monotone"
+            dataKey="sum"
+            stroke="#0b00e1"
+            fill="#0b00e1"
+            strokeWidth={5}
+            name="내 종합지수"
+            className="text-lg"
+          />
 
-        {/* 평균선임 */}
-        <Line
-          type="monotone"
-          dataKey={() => average}
-          stroke="#ff0000"
-          name="종합지수평균"
-        />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
-      {selectedDate && (
-        <>
-          <div>선택된 날짜: {selectedDate}</div>
-          <Graph userData={graphData} />
-        </>
-      )}
+          {/* 평균선임 */}
+          <Line
+            type="monotone"
+            dataKey={() => average}
+            stroke="#ff0000"
+            fill="#ff0000"
+            strokeWidth={5}
+            name="내 나이대 종합지수 평균"
+          />
+          <CartesianGrid strokeDasharray="5 5" />
+          <XAxis
+            dataKey="date"
+            stroke="#fffff"
+            tickFormatter={formatXAxis}
+            className="text-xl font-bold"
+          />
+          <YAxis
+            stroke="#fffff"
+            className="text-xl font-bold"
+            tickFormatter={formatYAxis}
+          />
+          <Tooltip contentStyle={{ fontSize: "28px" }} />
+        </LineChart>
+        {selectedDate && (
+          <div className="mt-10">
+            <div className="font-bold text-3xl text-center">
+              선택된 날짜: {selectedDate}
+            </div>
+            <div className="mt-10">
+              <Graph userData={graphData} />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
