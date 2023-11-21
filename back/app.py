@@ -104,6 +104,41 @@ def detail():
         "keywords": keywords
     }), 200
 
+def createQuiz4(user_id, content, date):
+    quiz = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3"})
+    if quiz is None:
+        result = {}
+        # 단답형 문제 생성
+        answer, question = question_generator(content)
+        # 4지선다 이야기 회상형 퀴즈 생성
+        dict1 = create_choice_quiz(user_id, content, answer,
+                                   question, date)
+        result[1] = dict1
+
+        doc = {'user_id': user_id, "quiz_type": "j3", "date": date, "result": result}
+        mongodb.quiz.insert_one(doc)
+    elif len(quiz) == 3:
+        result = quiz.get("result")
+        # 단답형 문제 생성
+        answer, question = question_generator(content)
+        # 4지선다 이야기 회상형 퀴즈 생성
+        dict1 = create_choice_quiz(user_id, content, answer,
+                                   question, date)
+        result[1] = result[2]
+        result[2] = result[3]
+        result[3] = dict1
+
+        mongodb.quiz.update_one({"user_id": user_id, "quiz_type": "j3"}, {"$set": {"result": result}})
+    else:
+        result = quiz.get("result")
+        # 단답형 문제 생성
+        answer, question = question_generator(content)
+        # 4지선다 이야기 회상형 퀴즈 생성
+        dict1 = create_choice_quiz(user_id, content, answer,
+                                   question, date)
+        result[len(quiz) + 1] = dict1
+
+        mongodb.quiz.update_one({"user_id": user_id, "quiz_type": "j3"}, {"$set": {"result": result}})
 
 # 본문에서 키워드 추출
 def extract_keywords(content):
@@ -162,6 +197,10 @@ def show_news_and_category_save():
     response = requests.post('https://tools.kinds.or.kr/search/news', json=data)
     data = response.json()
     content = data["return_object"]["documents"][0]["content"]
+
+    today = date.today().strftime("%Y-%m-%d")
+    # 비동기
+    Thread(target=createQuiz4, args=(user_id, content, today)).start()
 
     keywords = extract_keywords(content)
     # print(keywords)
@@ -486,7 +525,6 @@ def quiz_start():
     news_lst = category.get("current_news_id_lst")
 
     quiz_create(user_id, news_lst, today)
-
     quiz_lst = mongodb.quiz.find_one({"user_id": user_id, "quiz_type": "j3", "date": today})
 
     # return quiz_lst
@@ -498,25 +536,27 @@ def quiz_start():
 
 def quiz_create(user_id, news_lst, date):
     content_sum = ""
-    result = {}
-    cnt = 1
+    # result = {}
+    # cnt = 1
     for news in news_lst:
         # 디테일 불러오기
         data = send_detail_request(news)
         content_sum += data.get("return_object").get("documents")[0].get("content")
-        # 단답형 문제 생성
-        answer, question = question_generator(data.get("return_object").get("documents")[0].get("content"))
-        # 4지선다 이야기 회상형 퀴즈 생성
-        dict1 = create_choice_quiz(user_id, data.get("return_object").get("documents")[0].get("content"), answer,
-                                   question, date)
-        result[str(cnt)] = dict1
-        cnt += 1
+
+        # # 단답형 문제 생성
+        # answer, question = question_generator(data.get("return_object").get("documents")[0].get("content"))
+        # # 4지선다 이야기 회상형 퀴즈 생성
+        # dict1 = create_choice_quiz(user_id, data.get("return_object").get("documents")[0].get("content"), answer,
+        #                            question, date)
+        # result[str(cnt)] = dict1
+        # cnt += 1
 
     # 비동기
     Thread(target=quiz_list, args=(content_sum, user_id, date)).start()
 
-    doc = {'user_id': user_id, "quiz_type": "j3", "date": date, "result": result}
-    mongodb.quiz.insert_one(doc)
+    # doc = {'user_id': user_id, "quiz_type": "j3", "date": date, "result": result}
+    # mongodb.quiz.insert_one(doc)
+
 
 # j6 불러오기 GET
 @app.route("/quiz/start/j6", methods=['POST'])
