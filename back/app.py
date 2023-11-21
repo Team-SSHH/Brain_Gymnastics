@@ -598,7 +598,7 @@ def quiz_start_j7():
 
 
 # j7 정답 제출
-@app.route("/quiz/asnwer/j7", methods=['POST'])
+@app.route("/quiz/answer/j7", methods=['POST'])
 def answer_j7():
     user_id = request.json.get('user_id')
     quiz_id = request.json.get("quiz_id")
