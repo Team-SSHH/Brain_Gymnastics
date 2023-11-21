@@ -32,5 +32,6 @@ def question_generator(context):
 
     # 질문 추출
     question = output_str.split("질문:")[1].split("</s>")[0].strip()
-
+    print("질문: ", question)
+    print("정답: ", answer)
     return answer, question
