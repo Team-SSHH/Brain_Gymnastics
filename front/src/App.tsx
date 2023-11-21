@@ -8,39 +8,17 @@ import ProfilePage from "./pages/ProfilePage";
 import QuizPage from "./pages/QuizPage";
 
 function App() {
-  // useEffect(() => {
-  //   // axios를 사용하여 백엔드 API 호출
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         "http://127.0.0.1:5000/recommend/my",
-  //         {
-  //           user_id: "김동현",
-  //         }
-  //       );
-  //       const data = response.data;
-  //       // API 응답 데이터 처리
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   return (
     <BrowserRouter>
-      <div className="App bg-primary">
+      <div className="bg-primary h-screen font-default">
         <header className="App-header">
-          <img src={logo} alt="두뇌체조로고" className="w-32" />
+          <img src={logo} alt="두뇌체조로고" className="w-32 no-drag" />
         </header>
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/quiz" element={<QuizPage />} />
         </Routes>
-        <div>여기여기</div>
       </div>
     </BrowserRouter>
   );

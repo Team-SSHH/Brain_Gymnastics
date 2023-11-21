@@ -5,8 +5,26 @@ module.exports = {
     extend: {
       colors: {
         primary: "#96A57B",
+        secondary: "#C8CEAA",
+      },
+      fontFamily: {
+        default: ["Pretendard-Regular"],
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".no-drag": {
+          userSelect: "none",
+          "-webkit-user-drag": "none",
+          "-khtml-user-drag": "none",
+          "-moz-user-drag": "none",
+          "-o-user-drag": "none",
+          "user-drag": "none",
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };
