@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "antd";
+import hand from "../../assets/hand.png";
 
 interface QuizStepProps {
   current: number;
@@ -12,11 +13,19 @@ function J2({ current, setCurrent }: QuizStepProps) {
   };
 
   return (
-    <div>
-      <div>
-        <p>보스톤 이름대기 검사</p>
-        {/* <Button onClick={onClick}></Button> */}
+    <div className="flex flex-col items-center justify-center bg-gray-100">
+      <p className="text-5xl mb-10 mt-10 font-bold">보스톤 이름대기 검사</p>
+      <div className="text-2xl mb-5">
+        <p>
+          문제: 지금부터 제가 몇 개의 그림을 보여 드리겠습니다. 각 그림의 이름을
+          적어주십시오. “이 사물의 이름은 무엇입니까?”
+        </p>
       </div>
+      <img src={hand} alt="핸드" className="w-1/6 mb-5" />
+      <textarea
+        className="border mb-5 p-3 w-9/12 h-32 text-2xl"
+        placeholder="사물의 이름을 입력하세요."
+      />
     </div>
   );
 }
