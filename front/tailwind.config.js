@@ -13,11 +13,7 @@ module.exports = {
     },
   },
   plugins: [
-    function ({
-      addUtilities,
-    }: {
-      addUtilities: (utils: { [key: string]: any }) => void;
-    }) {
+    function ({ addUtilities }) {
       const newUtilities = {
         ".no-drag": {
           userSelect: "none",
