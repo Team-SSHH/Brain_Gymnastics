@@ -18,8 +18,8 @@ export const saveCategory = async (
 
 export const detail = (news_id: string) => api.post(`/detail`, { news_id });
 
-export const recommendNews = (news_id: string, category: string) =>
-  api.post(`/recommend/my`, { news_id, category });
+export const recommendNews = (user_id: string) =>
+  api.post(`/recommend/my`, { user_id });
 
 export const myQuiz = (user_id: string) =>
   api.post(`/user/myQuiz`, { user_id });
