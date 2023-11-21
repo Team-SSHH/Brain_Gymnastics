@@ -53,7 +53,7 @@ function QuizStep({ current }: QuizStepProps) {
         <BackBtn />
         <TitleBtn name="오늘의 문제" />
       </div>
-      <div className="mt-10 ml-10 bg-white p-3 rounded-2xl w-11/12">
+      <div className="mt-10 ml-10 bg-white p-3 rounded-2xl w-10/12 flex">
         <Steps
           className="font-default"
           direction="vertical"

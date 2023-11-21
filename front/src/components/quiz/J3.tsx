@@ -34,30 +34,36 @@ function J3({ current, setCurrent, data, id }: QuizStepProps) {
   };
 
   return (
-    <div>
-      <div>
-        <p>MMSE-KC</p>
-        {Object.entries(data.result).map(([key, value]) => {
-          const quizValue = value as QuizValue;
-          return (
-            <div key={key}>
-              <p>{`${key}번 ${quizValue.quiz_question}`}</p>
-              <Radio.Group
-                onChange={(e) =>
-                  handleRadioChange(quizValue.quiz_question, e.target.value)
-                }
-              >
-                {Object.entries(quizValue.example).map(([key, value]) => (
-                  <Radio value={key} key={key}>
-                    &nbsp;&nbsp;{`${key} : ${value}`}
-                  </Radio>
-                ))}
-              </Radio.Group>
-            </div>
-          );
-        })}
-        <Button onClick={postj3}>제출</Button>
-      </div>
+    <div className="mt-32 text-xl leading-loose mr-10">
+      {Object.entries(data.result).map(([key, value]) => {
+        const quizValue = value as QuizValue;
+        return (
+          <div key={key} className="mb-5">
+            <p className="text-3xl leading-loose">
+              <span className="font-extrabold ">{key}번 </span>
+              <span className="font-bold">{quizValue.quiz_question}</span>
+            </p>
+            <Radio.Group
+              onChange={(e) =>
+                handleRadioChange(quizValue.quiz_question, e.target.value)
+              }
+            >
+              {Object.entries(quizValue.example).map(([key, value]) => (
+                <Radio value={key} key={key} className="font-default text-2xl">
+                  &nbsp;&nbsp;{`${key} : ${value}`}
+                </Radio>
+              ))}
+            </Radio.Group>
+          </div>
+        );
+      })}
+      <Button
+        className="right-16 font-bold text-xl fixed w-44 h-14  bg-secondary hover:border-none hover:text-3xl hover:text-black"
+        type="primary"
+        onClick={postj3}
+      >
+        제출
+      </Button>
     </div>
   );
 }
