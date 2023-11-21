@@ -77,17 +77,22 @@ function J7({ current, setCurrent }: QuizStepProps) {
   }, [correctAnswers, incorrectAnswers]);
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center bg-gray-100">
       <div
         style={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          // alignItems: "center",
           flexWrap: "wrap",
         }}
       >
-        <div style={{ width: "70%", height: "60%" }}>
-          <p>단어목록재인 검사</p>
+        <div style={{ width: "90%", height: "60%" }}>
+          <p
+            style={{ textAlign: "center" }}
+            className="text-5xl mb-10 mt-10 font-bold"
+          >
+            단어목록재인 검사
+          </p>
           <div
             style={{
               display: "flex",
@@ -132,7 +137,19 @@ function J7({ current, setCurrent }: QuizStepProps) {
                 );
               })}
           </div>
-          <Button onClick={postJ7}>정답 제출</Button>
+          <Button
+            onClick={postJ7}
+            className="font-bold text-xl"
+            style={{
+              position: "fixed",
+              right: "3%",
+              bottom: "3%",
+              width: "150px",
+              height: "60px",
+            }}
+          >
+            정답 제출
+          </Button>
         </div>
       </div>
     </div>
