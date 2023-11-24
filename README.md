@@ -184,11 +184,11 @@
 
 <a name="item-two"></a>
 
-| **Name**     | 김동현 | 윤자현 | 이상훈 | 최상익 |
-|:------------:|:---:|:---:|:---:|:---:|
-| **Profile**  |     |     |     |     |
-| **Position** |     |     |     |     |
-| **Position** |     |     |     |     |
-| **Git**      |     |     |     |     |
+| **Name**     | 김동현                                       | 윤자현                                     | 이상훈                                  | 최상익                                  |
+|:------------:|:-----------------------------------------:|:---------------------------------------:|:------------------------------------:|:------------------------------------:|
+| **Profile**  |                                           |                                         |                                      |                                      |
+| **Position** | BE<br/>FE                                 | 팀장<br/>FE                               | BE<br/>DB                            | BE<br/>FE                            |
+| **Position** | 뉴스 추천 알고리즘 구현<br/>치매위험도 페이지 작성            | 메인 페이지 작성<br/><br/>뉴스 페이지 작성<br/>UX/UI  | 치매확률도 계산 구현<br/>RestApi 작성<br/>DB 관리 | AI로 퀴즈 생성 구현<br/>퀴즈 페이지 작성           |
+| **Git**      | [GitHub](https://github.com/dongdongx2x2) | [GitHub](https://github.com/YOONJAHYUN) | [GitHub](https://github.com/iri95)   | [GitHub](https://github.com/csi9876) |
 
 <br/>
