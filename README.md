@@ -1,4 +1,4 @@
-<h1 align="center"> 두뇌 퍼즐 </h1>
+<h1 align="center"> 두뇌 체조 </h1>
 <br/>
 
 ## 📝 목차
